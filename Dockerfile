@@ -5,7 +5,6 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=algoedge.settings
-ENV DJANGO_DEBUG=False
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -19,8 +18,6 @@ COPY . .
 
 RUN python manage.py collectstatic --noinput
 
-RUN python manage.py migrate --noinput
-
 EXPOSE 8000
 
-CMD ["gunicorn", "algoedge.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120"]
+CMD gunicorn algoedge.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120

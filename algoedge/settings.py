@@ -9,6 +9,11 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com,.railway.app').split(',')
 
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,https://*.onrender.com').split(',')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() in ('true', '1')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,8 +40,6 @@ INSTALLED_APPS = [
     'paygate',
     'metrics',
 
-    'crispy_forms',
-    'crispy_bootstrap5',
     'whitenoise.runserver_nostatic',
 ]
 
@@ -85,15 +88,15 @@ DATABASES = {
 if 'DATABASE_URL' in os.environ:
     import re
     db_url = os.environ['DATABASE_URL']
-    match = re.match(r'postgres://(.+):(.+)@(.+):(\d+)/(.+)', db_url)
+    match = re.match(r'postgres(ql)?://(.+):(.+)@(.+):(\d+)/(.+)', db_url)
     if match:
         DATABASES['default'] = {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': match.group(5),
-            'USER': match.group(1),
-            'PASSWORD': match.group(2),
-            'HOST': match.group(3),
-            'PORT': match.group(4),
+            'NAME': match.group(6),
+            'USER': match.group(2),
+            'PASSWORD': match.group(3),
+            'HOST': match.group(4),
+            'PORT': match.group(5),
         }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,9 +119,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_URL = 'userauth:login'
 LOGIN_REDIRECT_URL = 'dashboard:home'
