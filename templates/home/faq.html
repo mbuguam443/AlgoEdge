@@ -3,6 +3,33 @@
 
 {% block title %}FAQ - AlgoEdge{% endblock %}
 
+{% block seo_meta %}
+<meta name="description" content="Frequently asked questions about AlgoEdge trading services, expert advisors, prop firm challenges, copy trading, and automation.">
+<meta name="keywords" content="AlgoEdge FAQ, trading questions, expert advisor help, prop firm FAQs">
+<meta property="og:title" content="{{ block.super }}">
+<meta property="og:description" content="Frequently asked questions about AlgoEdge trading services, expert advisors, prop firm challenges, copy trading, and automation.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'logos/og-image.png' %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ block.super }}">
+<meta name="twitter:description" content="Frequently asked questions about AlgoEdge trading services, expert advisors, prop firm challenges, copy trading, and automation.">
+{% endblock %}
+
+{% block canonical_url %}{% url 'home:faq' %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'home:index' %}"},
+        {"@type": "ListItem", "position": 2, "name": "FAQ", "item": "{{ request.build_absolute_uri }}"}
+    ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <section class="section-padding" style="padding-top:120px;">
     <div class="container">

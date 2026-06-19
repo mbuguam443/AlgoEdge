@@ -3,6 +3,20 @@
 
 {% block title %}Services - AlgoEdge{% endblock %}
 
+{% block seo_meta %}
+<meta name="description" content="Professional algorithmic trading services. Expert advisor development, custom indicators, backtesting, and trading automation solutions.">
+<meta name="keywords" content="algorithmic trading services, EA development, custom indicators, backtesting, trading automation">
+<meta property="og:title" content="{{ block.super }}">
+<meta property="og:description" content="Professional algorithmic trading services. Expert advisor development, custom indicators, backtesting, and trading automation solutions.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'logos/og-image.png' %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ block.super }}">
+<meta name="twitter:description" content="Professional algorithmic trading services. Expert advisor development, custom indicators, backtesting, and trading automation solutions.">
+{% endblock %}
+
+{% block canonical_url %}{% url 'cservice:services' %}{% endblock %}
+
 {% block content %}
 <section class="section-padding" style="padding-top:120px;">
     <div class="container">

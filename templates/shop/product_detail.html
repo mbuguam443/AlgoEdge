@@ -1,6 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}{{ product.title }} - AlgoEdge Marketplace{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="{{ product.short_description }}">
+<meta name="keywords" content="trading tool, {{ product.title }}, forex EA, MT5 expert advisor, trading bot, algo trading">
+<meta property="og:title" content="{{ product.title }} - AlgoEdge Marketplace">
+<meta property="og:description" content="{{ product.short_description }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'logos/og-image.png' %}">
+<meta property="og:type" content="product">
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
+{% block canonical_url %}{% url 'shop:product_detail' product.slug %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{ product.title }}",
+    "description": "{{ product.short_description }}",
+    "offers": {
+        "@type": "Offer",
+        "price": "{{ product.display_price }}",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+    },
+    "category": "{{ product.product_type }}"
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <section class="section-padding" style="padding-top:120px;">
     <div class="container">

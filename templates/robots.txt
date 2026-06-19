@@ -4,6 +4,8 @@ Disallow: /accounts/
 Disallow: /dashboard/
 Disallow: /payments/
 Disallow: /notifications/
+Disallow: /analytics/
+Disallow: /affiliates/
 Allow: /
 
 Sitemap: {{ site_url }}/sitemap.xml

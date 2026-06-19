@@ -9,6 +9,7 @@ def site_settings(request):
         'telegram_link': settings.TELEGRAM_INVITE_LINK,
         'broker_affiliate_link': settings.BROKER_AFFILIATE_LINK,
         'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+        'og_image_default': settings.STATIC_URL + 'logos/og-image.png',
     }
 
 def notification_count(request):

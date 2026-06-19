@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Prop Firm Challenge - {{ challenge.firm.name }} | AlgoEdge{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="Track your {{ challenge.firm.name }} prop firm challenge progress.">
+<meta name="keywords" content="prop firm challenge, {{ challenge.firm.name }}, funded trading, challenge tracking, prop trading">
+<meta property="og:title" content="{{ block.super }}">
+<meta property="og:description" content="Track your {{ challenge.firm.name }} prop firm challenge progress.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'logos/og-image.png' %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ block.super }}">
+<meta name="twitter:description" content="Track your {{ challenge.firm.name }} prop firm challenge progress.">
+{% endblock %}
+
+{% block canonical_url %}{% url 'pfarm:challenge_detail' challenge.pk %}{% endblock %}
+
 {% block content %}
 <section class="section-padding" style="padding-top:120px;">
     <div class="container">

@@ -4,18 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block seo_meta %}
     <meta name="description" content="AlgoEdge - Intelligent Trading Solutions. Algorithmic trading, automation, prop firm management, copy trading, and premium trading tools.">
     <meta name="keywords" content="algorithmic trading, forex, expert advisors, trading bots, prop firm, copy trading, MT5, automation">
     <meta name="author" content="AlgoEdge">
+    <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="AlgoEdge - Intelligent Trading Solutions">
     <meta property="og:description" content="Algorithmic Trading Made Simple. Automate strategies, pass prop firms, copy successful traders.">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:site_name" content="AlgoEdge">
     <meta property="og:type" content="website">
     <meta property="og:image" content="{% static 'logos/og-image.png' %}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AlgoEdge - Intelligent Trading Solutions">
+    <meta name="twitter:description" content="Algorithmic Trading Made Simple. Automate strategies, pass prop firms, copy successful traders.">
+    <meta name="twitter:image" content="{% static 'logos/og-image.png' %}">
+    {% endblock %}
+
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 
     <title>{% block title %}AlgoEdge - Intelligent Trading Solutions{% endblock %}</title>
 
     <link rel="icon" type="image/png" href="{% static 'logos/favicon.png' %}">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "AlgoEdge",
+        "url": "{{ site_url }}",
+        "logo": "{% static 'logos/logo.png' %}",
+        "description": "Intelligent Trading Solutions. Algorithmic trading, automation, prop firm management, copy trading.",
+        "sameAs": [
+            "{{ discord_link|default:'' }}",
+            "{{ telegram_link|default:'' }}"
+        ]
+    }
+    </script>
+    {% block structured_data %}{% endblock %}
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

@@ -3,6 +3,20 @@
 
 {% block title %}Copy Trading - AlgoEdge{% endblock %}
 
+{% block seo_meta %}
+<meta name="description" content="Copy winning trading strategies from verified master traders. Auto-sync trades to your MT4/MT5 account. Start copying today.">
+<meta name="keywords" content="copy trading, master traders, MT4 copy trading, MT5 copy trading, signal following">
+<meta property="og:title" content="{{ block.super }}">
+<meta property="og:description" content="Copy winning trading strategies from verified master traders. Auto-sync trades to your MT4/MT5 account. Start copying today.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'logos/og-image.png' %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ block.super }}">
+<meta name="twitter:description" content="Copy winning trading strategies from verified master traders. Auto-sync trades to your MT4/MT5 account. Start copying today.">
+{% endblock %}
+
+{% block canonical_url %}{% url 'copytrade:traders' %}{% endblock %}
+
 {% block content %}
 <section class="section-padding" style="padding-top:120px;">
     <div class="container">

@@ -3,6 +3,20 @@
 
 {% block title %}Prop Firm - AlgoEdge{% endblock %}
 
+{% block seo_meta %}
+<meta name="description" content="Pass prop firm challenges with our proven strategies. Multiple funding firms available. Start your funded trading journey.">
+<meta name="keywords" content="prop firm challenges, funded trading, prop trading, challenge passing, trading firms">
+<meta property="og:title" content="{{ block.super }}">
+<meta property="og:description" content="Pass prop firm challenges with our proven strategies. Multiple funding firms available. Start your funded trading journey.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'logos/og-image.png' %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ block.super }}">
+<meta name="twitter:description" content="Pass prop firm challenges with our proven strategies. Multiple funding firms available. Start your funded trading journey.">
+{% endblock %}
+
+{% block canonical_url %}{% url 'pfarm:firms' %}{% endblock %}
+
 {% block content %}
 <section class="section-padding" style="padding-top:120px;">
     <div class="container">

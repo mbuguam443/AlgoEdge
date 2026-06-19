@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Register - AlgoEdge{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="Create your AlgoEdge account. Access algorithmic trading tools, courses, copy trading, and prop firm challenge management.">
+<meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block canonical_url %}{% url 'userauth:register' %}{% endblock %}
+
 {% block content %}
 <div class="auth-page">
     <div class="auth-card" data-aos="fade-up">

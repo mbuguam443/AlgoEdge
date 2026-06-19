@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Login - AlgoEdge{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="Login to your AlgoEdge account. Access your dashboard, courses, copy trading subscriptions, and prop firm challenges.">
+<meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block canonical_url %}{% url 'userauth:login' %}{% endblock %}
+
 {% block content %}
 <div class="auth-page">
     <div class="auth-card" data-aos="fade-up">
