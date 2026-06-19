@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-plus-circle"></i> Challenge</div>
+            <h2 class="section-title">Start New <span class="text-gradient">Challenge</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="form-glass">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Prop Firm</label>
+                                <select name="firm" class="form-control" required>
+                                    <option value="">Select a firm...</option>
+                                    {% for f in firms %}
+                                    <option value="{{ f.id }}">{{ f.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Number</label>
+                                <input type="text" name="account_number" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Size ($)</label>
+                                <input type="number" name="account_size" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Challenge Type</label>
+                                <input type="text" name="challenge_type" class="form-control" value="Phase 1" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Profit Target (%)</label>
+                                <input type="number" step="0.1" name="profit_target" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Daily DD Limit (%)</label>
+                                <input type="number" step="0.1" name="daily_drawdown_limit" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Max DD Limit (%)</label>
+                                <input type="number" step="0.1" name="max_drawdown_limit" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Challenge Duration (Days)</label>
+                                <input type="number" name="total_days" class="form-control" value="30" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Trading Platform</label>
+                                <select name="trading_platform" class="form-control">
+                                    <option value="MT5">MT5</option>
+                                    <option value="MT4">MT4</option>
+                                    <option value="cTrader">cTrader</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold w-100 btn-gold-lg">Start Challenge</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

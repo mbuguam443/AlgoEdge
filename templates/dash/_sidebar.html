@@ -1,0 +1,20 @@
+{% load static %}
+<div class="dashboard-sidebar">
+    <div class="text-center mb-4">
+        <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" height="35" onerror="this.style.display='none'">
+        <h6 class="text-gradient mt-2">Dashboard</h6>
+    </div>
+    <a href="{% url 'dashboard:home' %}" class="nav-item {% if request.resolver_match.view_name == 'dashboard:home' %}active{% endif %}"><i class="fas fa-th-large"></i>Overview</a>
+    <a href="{% url 'dashboard:products' %}" class="nav-item {% if request.resolver_match.view_name == 'dashboard:products' %}active{% endif %}"><i class="fas fa-box"></i>Products</a>
+    <a href="{% url 'dashboard:courses' %}" class="nav-item {% if request.resolver_match.view_name == 'dashboard:courses' %}active{% endif %}"><i class="fas fa-graduation-cap"></i>Courses</a>
+    <a href="{% url 'dashboard:downloads' %}" class="nav-item {% if request.resolver_match.view_name == 'dashboard:downloads' %}active{% endif %}"><i class="fas fa-download"></i>Downloads</a>
+    <a href="{% url 'dashboard:invoices' %}" class="nav-item {% if request.resolver_match.view_name == 'dashboard:invoices' %}active{% endif %}"><i class="fas fa-file-invoice"></i>Invoices</a>
+    <a href="{% url 'dashboard:projects' %}" class="nav-item {% if request.resolver_match.view_name == 'dashboard:projects' %}active{% endif %}"><i class="fas fa-project-diagram"></i>Projects</a>
+    <a href="{% url 'copytrade:traders' %}" class="nav-item"><i class="fas fa-copy"></i>Copy Trading</a>
+    <a href="{% url 'pfarm:challenges' %}" class="nav-item"><i class="fas fa-trophy"></i>Prop Firm</a>
+    <a href="{% url 'brokerx:dashboard' %}" class="nav-item"><i class="fas fa-shield-alt"></i>EA Licenses</a>
+    <a href="{% url 'refer:dashboard' %}" class="nav-item"><i class="fas fa-link"></i>Affiliates</a>
+    <a href="{% url 'userauth:profile' %}" class="nav-item"><i class="fas fa-user-cog"></i>Profile</a>
+    <hr style="border-color:var(--glass-border);">
+    <a href="{% url 'userauth:logout' %}" class="nav-item"><i class="fas fa-sign-out-alt"></i>Logout</a>
+</div>

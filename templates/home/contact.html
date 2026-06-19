@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-headset"></i> Contact</div>
+            <h2 class="section-title">Get in <span class="text-gradient">Touch</span></h2>
+            <p class="section-subtitle">Have a question or project in mind? We'd love to hear from you.</p>
+        </div>
+        <div class="row g-5 justify-content-center">
+            <div class="col-md-8" data-aos="fade-up">
+                {% if request.GET.success %}
+                <div class="alert alert-success bg-glass gold-border" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> Message sent successfully! We'll get back to you shortly.
+                </div>
+                {% endif %}
+                <div class="form-glass">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Subject</label>
+                                <input type="text" name="subject" class="form-control" placeholder="Subject">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Message</label>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Your message..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold btn-gold-lg w-100">Send Message <i class="fas fa-paper-plane ms-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

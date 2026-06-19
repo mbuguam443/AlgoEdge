@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Invoices - AlgoEdge{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout" style="padding-top:72px;">
+  {% include 'dash/_sidebar.html' %}
+  <div class="dashboard-main">
+    <h4 class="mb-4"><i class="fas fa-file-invoice me-2" style="color:var(--accent-gold);"></i>Invoices</h4>
+    {% if invoices %}
+    <div class="card-glass">
+      <table class="table table-algo">
+        <thead><tr><th>Invoice #</th><th>Description</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>
+          {% for inv in invoices %}
+          <tr>
+            <td>{{ inv.invoice_number }}</td>
+            <td>{{ inv.description|truncatewords:8 }}</td>
+            <td>${{ inv.amount|floatformat:2 }}</td>
+            <td><span class="badge {% if inv.status == 'paid' %}badge-green{% elif inv.status == 'overdue' %}badge-danger{% else %}badge-gold{% endif %}">{{ inv.get_status_display }}</span></td>
+            <td>{{ inv.created_at|date:"M d, Y" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="card-glass"><p style="color:var(--text-muted);">No invoices yet.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

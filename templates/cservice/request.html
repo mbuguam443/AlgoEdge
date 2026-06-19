@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-paper-plane"></i> Service Request</div>
+            <h2 class="section-title">Submit a <span class="text-gradient">Service Request</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="form-glass">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Name</label>
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                {{ form.description }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Budget ($)</label>
+                                {{ form.budget }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Deadline</label>
+                                {{ form.deadline }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Attachment</label>
+                                {{ form.attachment }}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold btn-gold-lg w-100">Submit Request</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

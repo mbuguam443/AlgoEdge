@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Subscribe - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-copy"></i> Copy Trading</div>
+            <h2 class="section-title">Subscribe to <span class="text-gradient">{{ trader.name }}</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6" data-aos="fade-up">
+                <div class="card-glass">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Investment Amount ($)</label>
+                            <input type="number" name="amount" class="form-control" min="100" step="10" required>
+                            <small class="text-muted">Minimum investment: $100</small>
+                        </div>
+                        <button type="submit" class="btn btn-gold w-100 btn-gold-lg">Start Copying</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

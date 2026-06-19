@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Prop Firm - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-trophy"></i> Prop Firm</div>
+            <h2 class="section-title">Prop Firm <span class="text-gradient">Challenge Management</span></h2>
+            <p class="section-subtitle">Track, manage, and conquer prop firm challenges with advanced monitoring tools.</p>
+        </div>
+        <div class="row g-4">
+            {% for firm in firms %}
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card-glass h-100 text-center">
+                    <div class="card-icon mx-auto">
+                        {% if firm.logo %}
+                        <img src="{{ firm.logo.url }}" alt="{{ firm.name }}" style="max-width:100%;max-height:100%;">
+                        {% else %}
+                        <i class="fas fa-building"></i>
+                        {% endif %}
+                    </div>
+                    <h5>{{ firm.name }}</h5>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);">{{ firm.description|truncatewords:20 }}</p>
+                    {% if firm.website %}
+                    <a href="{{ firm.website }}" target="_blank" class="btn btn-outline-gold w-100">Visit Website</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center" style="color:var(--text-muted);">
+                <i class="fas fa-trophy" style="font-size:3rem;margin-bottom:1rem;"></i>
+                <p>Prop firm data coming soon.</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% if user.is_authenticated %}
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'pfarm:challenges' %}" class="btn btn-gold btn-gold-lg">View My Challenges <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="{% url 'pfarm:challenge_create' %}" class="btn btn-outline-gold btn-gold-lg ms-2">Start New Challenge</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

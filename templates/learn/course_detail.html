@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-8" data-aos="fade-up">
+                <span class="badge badge-gold mb-3">{{ course.get_level_display }}</span>
+                <h2>{{ course.title }}</h2>
+                <p style="color:var(--text-secondary);font-size:1.05rem;">{{ course.description }}</p>
+
+                {% if course.lessons.exists %}
+                <h5 class="mt-5 mb-3">Course Lessons</h5>
+                <div class="list-group">
+                    {% for lesson in course.lessons.all %}
+                    <div class="list-group-item bg-glass gold-border d-flex justify-content-between align-items-center" style="border-radius:var(--radius-sm);margin-bottom:5px;">
+                        <div>
+                            <i class="fas fa-play-circle me-2" style="color:var(--accent-gold);"></i>
+                            {{ lesson.title }}
+                            {% if lesson.is_free %}<span class="badge badge-green ms-2">Free</span>{% endif %}
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <small style="color:var(--text-muted);">{{ lesson.duration_minutes }} min</small>
+                            <a href="{% url 'learn:lesson_detail' course_slug=course.slug slug=lesson.slug %}" class="btn btn-sm btn-outline-gold">Watch</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-glass" style="position:sticky;top:100px;">
+                    <div style="background:var(--secondary);border-radius:var(--radius-md);height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+                        <i class="fas fa-play-circle" style="font-size:4rem;color:var(--accent-gold);opacity:0.5;"></i>
+                    </div>
+                    <h5 class="mb-0">
+                        {% if course.is_free %}
+                        <span class="text-gradient" style="font-size:1.5rem;">Free</span>
+                        {% else %}
+                        <span class="text-gradient" style="font-size:1.5rem;">${{ course.price|floatformat:0 }}</span>
+                        {% endif %}
+                    </h5>
+                    <div class="d-flex justify-content-between mt-3 mb-3" style="font-size:0.9rem;color:var(--text-muted);">
+                        <span><i class="fas fa-book-open me-1"></i>{{ course.lessons_count }} Lessons</span>
+                        <span><i class="fas fa-clock me-1"></i>{{ course.duration_hours }}h</span>
+                        <span><i class="fas fa-users me-1"></i>{{ course.enrolled_students }}</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        {% if is_enrolled %}
+                        <a href="#" class="btn btn-green w-100" disabled>Enrolled</a>
+                        {% else %}
+                        <a href="{% url 'learn:enroll' slug=course.slug %}" class="btn btn-gold w-100">Enroll Now</a>
+                        {% endif %}
+                    {% else %}
+                    <a href="{% url 'userauth:login' %}?next={{ request.path }}" class="btn btn-gold w-100">Login to Enroll</a>
+                    {% endif %}
+                    {% if course.has_certificate %}
+                    <p class="text-center mt-2 mb-0" style="font-size:0.8rem;color:var(--success);"><i class="fas fa-certificate me-1"></i>Certificate of Completion</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

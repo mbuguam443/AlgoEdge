@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4" data-aos="fade-up">
+                <div class="card-glass text-center">
+                    <div style="width:100px;height:100px;border-radius:50%;background:var(--accent-gold);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:var(--primary);margin:0 auto 1rem;">
+                        {{ trader.name|first }}
+                    </div>
+                    <h4>{{ trader.name }}</h4>
+                    {% if trader.is_verified %}<span class="badge badge-green"><i class="fas fa-check-circle"></i> Verified</span>{% endif %}
+                    <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:0.5rem;">{{ trader.bio }}</p>
+                    <hr style="border-color:var(--glass-border);">
+                    <div class="row g-2">
+                        <div class="col-6"><small style="color:var(--text-muted);">Style</small><p>{{ trader.trading_style|default:"N/A" }}</p></div>
+                        <div class="col-6"><small style="color:var(--text-muted);">Instruments</small><p>{{ trader.instruments|default:"N/A" }}</p></div>
+                        <div class="col-6"><small style="color:var(--text-muted);">Risk Level</small><p>{{ trader.get_risk_level_display|default:"Moderate" }}</p></div>
+                        <div class="col-6"><small style="color:var(--text-muted);">Min Investment</small><p>${{ trader.min_investment|floatformat:0 }}</p></div>
+                    </div>
+                    <a href="{% url 'copytrade:subscribe' pk=trader.pk %}" class="btn btn-gold w-100">Start Copying <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3 col-6">
+                        <div class="card-glass text-center p-3">
+                            <div style="font-size:1.5rem;font-weight:800;color:var(--success);">{{ trader.roi }}%</div>
+                            <small style="color:var(--text-muted);">ROI</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="card-glass text-center p-3">
+                            <div style="font-size:1.5rem;font-weight:800;color:var(--accent-gold);">{{ trader.win_rate }}%</div>
+                            <small style="color:var(--text-muted);">Win Rate</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="card-glass text-center p-3">
+                            <div style="font-size:1.5rem;font-weight:800;color:#ff4444;">{{ trader.max_drawdown }}%</div>
+                            <small style="color:var(--text-muted);">Max DD</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="card-glass text-center p-3">
+                            <div style="font-size:1.5rem;font-weight:800;color:var(--text-primary);">{{ trader.total_trades }}</div>
+                            <small style="color:var(--text-muted);">Trades</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-glass">
+                    <h5 class="mb-3">Performance Metrics</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-between p-2" style="border-bottom:1px solid var(--glass-border);">
+                                <span style="color:var(--text-muted);">Profit Factor</span>
+                                <span style="font-weight:600;">{{ trader.profit_factor }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-between p-2" style="border-bottom:1px solid var(--glass-border);">
+                                <span style="color:var(--text-muted);">Sharpe Ratio</span>
+                                <span style="font-weight:600;">{{ trader.sharpe_ratio }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-between p-2" style="border-bottom:1px var(--glass-border);">
+                                <span style="color:var(--text-muted);">Monthly ROI</span>
+                                <span style="font-weight:600;color:var(--success);">{{ trader.monthly_roi }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

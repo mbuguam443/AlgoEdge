@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Projects - AlgoEdge{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout" style="padding-top:72px;">
+  {% include 'dash/_sidebar.html' %}
+  <div class="dashboard-main">
+    <h4 class="mb-4"><i class="fas fa-project-diagram me-2" style="color:var(--accent-gold);"></i>My Projects</h4>
+    <div class="card-glass">
+      <p style="color:var(--text-muted);">Your automation projects and their status will appear here.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-info-circle"></i> About Us</div>
+            <h2 class="section-title">Intelligent Trading <span class="text-gradient">Solutions</span></h2>
+            <p class="section-subtitle">Empowering traders with cutting-edge algorithmic technology since 2024.</p>
+        </div>
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" style="max-width:200px;margin-bottom:2rem;" onerror="this.style.display='none'">
+                <h3>Who We Are</h3>
+                <p style="color:var(--text-secondary);">AlgoEdge is a premier fintech platform dedicated to providing intelligent trading solutions. We combine deep market expertise with cutting-edge technology to help traders automate their strategies, pass prop firm challenges, and achieve consistent profitability.</p>
+                <p style="color:var(--text-secondary);">Our team of experienced developers and traders has helped thousands of clients worldwide optimize their trading operations through custom EA development, signal services, and comprehensive prop firm management tools.</p>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="card-glass text-center p-4">
+                            <h3 class="text-gradient" style="font-size:2rem;font-weight:900;">5+</h3>
+                            <p style="color:var(--text-muted);margin:0;">Years Experience</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card-glass text-center p-4">
+                            <h3 style="font-size:2rem;font-weight:900;color:var(--success);">15K+</h3>
+                            <p style="color:var(--text-muted);margin:0;">Clients</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card-glass text-center p-4">
+                            <h3 class="text-gradient" style="font-size:2rem;font-weight:900;">500+</h3>
+                            <p style="color:var(--text-muted);margin:0;">EAs Built</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card-glass text-center p-4">
+                            <h3 style="font-size:2rem;font-weight:900;color:var(--success);">98%</h3>
+                            <p style="color:var(--text-muted);margin:0;">Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

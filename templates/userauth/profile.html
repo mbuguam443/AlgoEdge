@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-user"></i> Profile</div>
+            <h2 class="section-title">Your <span class="text-gradient">Profile</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="card-glass">
+                    <div class="d-flex align-items-start gap-4 mb-4">
+                        <div style="width:80px;height:80px;border-radius:50%;background:var(--accent-gold);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:var(--primary);flex-shrink:0;">
+                            {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                            {% else %}
+                            {{ user.username|first|upper }}
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="mb-1">{{ user.username }}</h4>
+                            <p style="color:var(--text-secondary);margin:0;">{{ user.email }}</p>
+                            <div class="d-flex gap-2 mt-2">
+                                <span class="badge badge-gold">{{ profile.country|default:"Country not set" }}</span>
+                                <span class="badge {% if profile.is_verified %}badge-green{% else %}badge-gold{% endif %}">
+                                    {% if profile.is_verified %}Verified{% else %}Unverified{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url 'userauth:profile_edit' %}" class="btn btn-outline-gold"><i class="fas fa-edit"></i> Edit</a>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" style="font-size:0.85rem;color:var(--text-muted);">Phone</label>
+                            <p>{{ profile.phone|default:"Not set" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" style="font-size:0.85rem;color:var(--text-muted);">Country</label>
+                            <p>{{ profile.country|default:"Not set" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" style="font-size:0.85rem;color:var(--text-muted);">MT4 Account</label>
+                            <p>{{ profile.mt4_account|default:"Not linked" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" style="font-size:0.85rem;color:var(--text-muted);">MT5 Account</label>
+                            <p>{{ profile.mt5_account|default:"Not linked" }}</p>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" style="font-size:0.85rem;color:var(--text-muted);">Bio</label>
+                            <p>{{ profile.bio|default:"No bio yet." }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

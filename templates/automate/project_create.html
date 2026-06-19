@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-plus-circle"></i> Automation</div>
+            <h2 class="section-title">Submit <span class="text-gradient">Strategy Project</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="form-glass">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Project Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g., Scalping EA for EURUSD" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Strategy Description</label>
+                                <textarea name="description" class="form-control" rows="5" placeholder="Describe your trading strategy in detail..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Trading Rules</label>
+                                <textarea name="trading_rules" class="form-control" rows="4" placeholder="Entry conditions, exit conditions, risk management rules..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Indicators Used</label>
+                                <input type="text" name="indicators" class="form-control" placeholder="e.g., RSI, MACD, Moving Average">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Timeframes</label>
+                                <input type="text" name="timeframes" class="form-control" placeholder="e.g., M15, H1, H4">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Platform</label>
+                                <input type="text" name="platforms" class="form-control" value="MT5">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Examples</label>
+                                <input type="text" name="examples" class="form-control" placeholder="Link to similar products or strategies">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Budget ($)</label>
+                                <input type="number" name="budget" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Deadline</label>
+                                <input type="date" name="deadline" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Screenshots / Files</label>
+                                <input type="file" name="screenshots" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold w-100 btn-gold-lg">Submit Project <i class="fas fa-paper-plane ms-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

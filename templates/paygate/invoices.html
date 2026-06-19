@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-file-invoice"></i> Invoices</div>
+            <h2 class="section-title">Your <span class="text-gradient">Invoices</span></h2>
+        </div>
+        <div class="card-glass" data-aos="fade-up">
+            {% if invoices %}
+            <div class="table-responsive">
+                <table class="table table-algo">
+                    <thead><tr><th>Invoice #</th><th>Description</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                    <tbody>
+                        {% for inv in invoices %}
+                        <tr>
+                            <td><strong>{{ inv.invoice_number }}</strong></td>
+                            <td>{{ inv.description|truncatewords:10 }}</td>
+                            <td>${{ inv.amount|floatformat:2 }}</td>
+                            <td><span class="badge {% if inv.status == 'paid' %}badge-green{% elif inv.status == 'overdue' %}badge-danger{% else %}badge-gold{% endif %}">{{ inv.get_status_display }}</span></td>
+                            <td style="font-size:0.85rem;">{{ inv.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4" style="color:var(--text-muted);">
+                <i class="fas fa-file-invoice" style="font-size:2rem;margin-bottom:1rem;"></i>
+                <p>No invoices yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

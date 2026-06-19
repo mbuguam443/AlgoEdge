@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="card-glass">
+                    <h4>{{ challenge.firm.name }} - ${{ challenge.account_size|floatformat:0 }}</h4>
+                    <p style="color:var(--text-muted);">{{ challenge.challenge_type }} | {{ challenge.trading_platform }} | Account: {{ challenge.account_number }}</p>
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-3 col-6">
+                            <div class="text-center p-3" style="background:rgba(0,200,83,0.05);border-radius:var(--radius-sm);">
+                                <div style="font-size:1.5rem;font-weight:800;color:var(--success);">{{ challenge.current_profit }}%</div>
+                                <small style="color:var(--text-muted);">Current Profit</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="text-center p-3" style="background:rgba(212,175,55,0.05);border-radius:var(--radius-sm);">
+                                <div style="font-size:1.5rem;font-weight:800;color:var(--accent-gold);">{{ challenge.profit_target }}%</div>
+                                <small style="color:var(--text-muted);">Target</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="text-center p-3" style="background:rgba(255,68,68,0.05);border-radius:var(--radius-sm);">
+                                <div style="font-size:1.5rem;font-weight:800;color:#ff4444;">{{ challenge.current_max_drawdown }}%</div>
+                                <small style="color:var(--text-muted);">Max DD</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="text-center p-3" style="background:rgba(212,175,55,0.05);border-radius:var(--radius-sm);">
+                                <div style="font-size:1.5rem;font-weight:800;color:var(--accent-gold);">{{ challenge.days_remaining }}d</div>
+                                <small style="color:var(--text-muted);">Remaining</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span style="color:var(--text-muted);">Progress to Target</span>
+                            <span style="color:var(--accent-gold);">{% widthratio challenge.current_profit challenge.profit_target 100 %}%</span>
+                        </div>
+                        <div class="progress progress-algo" style="height:10px;">
+                            <div class="progress-bar" style="width:{% widthratio challenge.current_profit challenge.profit_target 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                {% if challenge.trades.exists %}
+                <div class="card-glass mt-4">
+                    <h5 class="mb-3">Recent Trades</h5>
+                    <div class="table-responsive">
+                        <table class="table table-algo">
+                            <thead><tr><th>Instrument</th><th>Direction</th><th>Lots</th><th>Entry</th><th>Exit</th><th>Profit</th></tr></thead>
+                            <tbody>
+                                {% for t in challenge.trades.all|slice:":10" %}
+                                <tr>
+                                    <td>{{ t.instrument }}</td>
+                                    <td><span class="badge {% if t.direction == 'buy' %}badge-green{% else %}badge-danger{% endif %}">{{ t.direction|upper }}</span></td>
+                                    <td>{{ t.lot_size }}</td>
+                                    <td>{{ t.entry_price }}</td>
+                                    <td>{{ t.exit_price|default:"Open" }}</td>
+                                    <td style="color:{% if t.profit > 0 %}var(--success){% elif t.profit < 0 %}#ff4444{% endif %};">{{ t.profit|default:"-" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-glass" style="position:sticky;top:100px;">
+                    <h5 class="mb-3">Challenge Info</h5>
+                    <div style="font-size:0.9rem;">
+                        <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--glass-border)!important;">
+                            <span style="color:var(--text-muted);">Status</span>
+                            <span class="badge {% if challenge.status == 'passed' %}badge-green{% elif challenge.status == 'failed' %}badge-danger{% else %}badge-gold{% endif %}">{{ challenge.get_status_display }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--glass-border)!important;">
+                            <span style="color:var(--text-muted);">Daily DD Limit</span>
+                            <span>{{ challenge.daily_drawdown_limit }}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--glass-border)!important;">
+                            <span style="color:var(--text-muted);">Max DD Limit</span>
+                            <span>{{ challenge.max_drawdown_limit }}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--glass-border)!important;">
+                            <span style="color:var(--text-muted);">Current Daily DD</span>
+                            <span style="color:{% if challenge.current_daily_drawdown > challenge.daily_drawdown_limit %}#ff4444{% else %}var(--success){% endif %};">{{ challenge.current_daily_drawdown }}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--glass-border)!important;">
+                            <span style="color:var(--text-muted);">EA Running</span>
+                            <span><i class="fas fa-circle" style="color:{% if challenge.ea_running %}var(--success){% else %}var(--text-muted){% endif %};font-size:0.5rem;"></i> {{ challenge.ea_running|yesno:"Yes,No" }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2">
+                            <span style="color:var(--text-muted);">Start Date</span>
+                            <span>{{ challenge.start_date|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

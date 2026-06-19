@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-trophy"></i> Challenges</div>
+            <h2 class="section-title">My Prop Firm <span class="text-gradient">Challenges</span></h2>
+        </div>
+        <div class="text-end mb-4">
+            <a href="{% url 'pfarm:challenge_create' %}" class="btn btn-gold"><i class="fas fa-plus"></i> New Challenge</a>
+        </div>
+        <div class="row g-4">
+            {% for c in challenges %}
+            <div class="col-md-6" data-aos="fade-up">
+                <div class="card-glass">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="mb-1">{{ c.firm.name }}</h5>
+                            <span style="color:var(--text-muted);font-size:0.85rem;">${{ c.account_size|floatformat:0 }} {{ c.challenge_type }}</span>
+                        </div>
+                        <span class="badge {% if c.status == 'passed' %}badge-green{% elif c.status == 'failed' %}badge-danger{% else %}badge-gold{% endif %}">{{ c.get_status_display }}</span>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-4 text-center">
+                            <div style="font-weight:700;color:var(--success);">{{ c.current_profit }}%</div>
+                            <small style="color:var(--text-muted);">Profit</small>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div style="font-weight:700;color:var(--accent-gold);">{{ c.days_remaining }}d</div>
+                            <small style="color:var(--text-muted);">Left</small>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div style="font-weight:700;color:#ff4444;">{{ c.current_max_drawdown }}%</div>
+                            <small style="color:var(--text-muted);">Drawdown</small>
+                        </div>
+                    </div>
+                    <div class="progress progress-algo mb-3">
+                        <div class="progress-bar" style="width:{% widthratio c.current_profit c.profit_target 100 %}%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between" style="font-size:0.8rem;">
+                        <span style="color:var(--text-muted);">Target: {{ c.profit_target }}%</span>
+                        <span style="color:var(--text-muted);">DD Limit: {{ c.max_drawdown_limit }}%</span>
+                    </div>
+                    <a href="{% url 'pfarm:challenge_detail' pk=c.pk %}" class="btn btn-outline-gold w-100 mt-3">View Details</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center" style="color:var(--text-muted);">
+                <i class="fas fa-trophy" style="font-size:3rem;margin-bottom:1rem;"></i>
+                <p>No challenges yet. Start your first prop firm challenge!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

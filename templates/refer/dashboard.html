@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Affiliates - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-link"></i> Affiliates</div>
+            <h2 class="section-title">Earn with <span class="text-gradient">AlgoEdge</span></h2>
+            <p class="section-subtitle">Refer traders and earn commissions on every sale.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="dashboard-stat-card">
+                    <div class="stat-icon" style="background:rgba(212,175,55,0.15);color:var(--accent-gold);"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-value">${{ affiliate.total_earnings|default:"0.00" }}</div>
+                    <div class="stat-label">Total Earnings</div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="dashboard-stat-card">
+                    <div class="stat-icon" style="background:rgba(0,200,83,0.15);color:var(--success);"><i class="fas fa-clock"></i></div>
+                    <div class="stat-value">${{ affiliate.pending_earnings|default:"0.00" }}</div>
+                    <div class="stat-label">Pending Earnings</div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="dashboard-stat-card">
+                    <div class="stat-icon" style="background:rgba(212,175,55,0.15);color:var(--accent-gold);"><i class="fas fa-users"></i></div>
+                    <div class="stat-value">{{ affiliate.total_referrals|default:"0" }}</div>
+                    <div class="stat-label">Total Referrals</div>
+                </div>
+            </div>
+        </div>
+        {% if affiliate %}
+        <div class="card-glass mt-4" data-aos="fade-up">
+            <h5 class="mb-3">Your Affiliate Link</h5>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" value="{{ site_url }}{% url 'userauth:register' %}?ref={{ affiliate.code }}" id="affiliateLink" readonly>
+                <button class="btn btn-gold" onclick="navigator.clipboard.writeText(document.getElementById('affiliateLink').value);this.innerHTML='<i class=\'fas fa-check\'></i> Copied!';setTimeout(()=>this.innerHTML='<i class=\'fas fa-copy\'></i> Copy',2000);"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <p style="font-size:0.85rem;color:var(--text-muted);">Earn {{ affiliate.commission_rate }}% commission on every sale made through your referral link.</p>
+        </div>
+
+        <div class="card-glass mt-4" data-aos="fade-up">
+            <h5 class="mb-3">Recent Referrals</h5>
+            {% if referrals %}
+            <div class="table-responsive">
+                <table class="table table-algo">
+                    <thead><tr><th>Email</th><th>Status</th><th>Commission</th><th>Date</th></tr></thead>
+                    <tbody>
+                        {% for r in referrals %}
+                        <tr>
+                            <td>{{ r.referred_email }}</td>
+                            <td><span class="badge {% if r.broker_verified %}badge-green{% else %}badge-gold{% endif %}">{% if r.broker_verified %}Verified{% else %}Pending{% endif %}</span></td>
+                            <td>${{ r.commission_earned|floatformat:2 }}</td>
+                            <td style="font-size:0.85rem;">{{ r.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="color:var(--text-muted);">No referrals yet. Share your link to start earning!</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

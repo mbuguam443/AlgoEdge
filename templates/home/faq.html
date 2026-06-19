@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FAQ - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-question-circle"></i> FAQ</div>
+            <h2 class="section-title">Frequently Asked <span class="text-gradient">Questions</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    {% for faq in faqs %}
+                    <div class="accordion-item bg-glass mb-3" style="border:1px solid var(--glass-border);border-radius:var(--radius-md);" data-aos="fade-up">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}" style="background:transparent;color:var(--text-primary);font-weight:600;box-shadow:none;">
+                                {{ faq.question }}
+                            </button>
+                        </h2>
+                        <div id="faq{{ faq.id }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body" style="color:var(--text-secondary);border-top:1px solid var(--glass-border);">
+                                {{ faq.answer|linebreaks }}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center" style="color:var(--text-muted);">No FAQs yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

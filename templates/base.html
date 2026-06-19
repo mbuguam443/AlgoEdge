@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AlgoEdge - Intelligent Trading Solutions. Algorithmic trading, automation, prop firm management, copy trading, and premium trading tools.">
+    <meta name="keywords" content="algorithmic trading, forex, expert advisors, trading bots, prop firm, copy trading, MT5, automation">
+    <meta name="author" content="AlgoEdge">
+
+    <meta property="og:title" content="AlgoEdge - Intelligent Trading Solutions">
+    <meta property="og:description" content="Algorithmic Trading Made Simple. Automate strategies, pass prop firms, copy successful traders.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{% static 'logos/og-image.png' %}">
+
+    <title>{% block title %}AlgoEdge - Intelligent Trading Solutions{% endblock %}</title>
+
+    <link rel="icon" type="image/png" href="{% static 'logos/favicon.png' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-xl navbar-dark navbar-algo fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home:index' %}">
+                <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" onerror="this.style.display='none'">
+                <span class="brand-text">ALGOEDGE</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home:index' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cservice:services' %}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'learn:courses' %}">Academy</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'shop:products' %}">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'copytrade:traders' %}">Copy Trading</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'pfarm:firms' %}">Prop Firm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'automate:projects' %}">Automation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'articles:blog' %}">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home:pricing' %}">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home:contact' %}">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'alerts:notifications' %}" class="btn btn-glass position-relative" id="notificationBell">
+                            <i class="fas fa-bell"></i>
+                            {% if unread_notifications > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.6rem;">
+                                    {{ unread_notifications }}
+                                </span>
+                            {% endif %}
+                        </a>
+                        <div class="dropdown">
+                            <button class="btn btn-glass dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark bg-glass">
+                                <li><a class="dropdown-item" href="{% url 'dashboard:home' %}"><i class="fas fa-th-large me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{% url 'userauth:profile' %}"><i class="fas fa-user-cog me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'refer:dashboard' %}"><i class="fas fa-link me-2"></i>Affiliates</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'userauth:logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'userauth:login' %}" class="btn btn-outline-gold">Login</a>
+                        <a href="{% url 'userauth:register' %}" class="btn btn-gold">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container" style="padding-top: 90px;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show bg-glass gold-border" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer-algo">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" height="40" onerror="this.style.display='none'">
+                        <h5 class="mb-0"><span class="text-gradient">ALGOEDGE</span></h5>
+                    </div>
+                    <p class="text-secondary" style="font-size:0.9rem;">Intelligent Trading Solutions. We help traders automate strategies, pass prop firms, copy successful traders and build profitable trading systems.</p>
+                    <div class="social-links">
+                        <a href="{{ discord_link|default:'#' }}" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="{{ telegram_link|default:'#' }}" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h5>Services</h5>
+                    <a href="{% url 'cservice:services' %}">EA Development</a>
+                    <a href="{% url 'cservice:services' %}">Trading Bots</a>
+                    <a href="{% url 'cservice:services' %}">Custom Indicators</a>
+                    <a href="{% url 'cservice:services' %}">Backtesting</a>
+                    <a href="{% url 'automate:projects' %}">Automation</a>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h5>Learn</h5>
+                    <a href="{% url 'learn:courses' %}">Courses</a>
+                    <a href="{% url 'articles:blog' %}">Blog</a>
+                    <a href="{% url 'articles:blog' %}">Market Analysis</a>
+                    <a href="{% url 'home:faq' %}">FAQ</a>
+                    <a href="{% url 'home:pricing' %}">Pricing</a>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h5>Platform</h5>
+                    <a href="{% url 'shop:products' %}">Marketplace</a>
+                    <a href="{% url 'copytrade:traders' %}">Copy Trading</a>
+                    <a href="{% url 'pfarm:firms' %}">Prop Firm</a>
+                    <a href="{% url 'brokerx:dashboard' %}">Free EAs</a>
+                    <a href="{% url 'refer:dashboard' %}">Affiliates</a>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h5>Company</h5>
+                    <a href="{% url 'home:about' %}">About</a>
+                    <a href="{% url 'home:contact' %}">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Risk Disclaimer</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} AlgoEdge. All rights reserved. Intelligent Trading Solutions.</p>
+                <p><i class="fas fa-shield-alt me-1" style="color:var(--accent-gold);"></i> Secure & Encrypted</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

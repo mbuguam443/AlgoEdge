@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="grid-overlay"></div>
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="hero-badge fade-in-up">
+                    <span class="dot"></span>
+                    AI-Powered Trading Platform
+                </div>
+                <h1 class="hero-title fade-in-up">
+                    Algorithmic Trading<br>
+                    <span class="text-gradient">Made Simple</span>
+                </h1>
+                <p class="hero-subtitle fade-in-up">
+                    We help traders automate strategies, pass prop firms, copy successful traders and build profitable trading systems with cutting-edge technology.
+                </p>
+                <div class="d-flex flex-wrap gap-3 fade-in-up">
+                    <a href="{% url 'userauth:register' %}" class="btn btn-gold btn-gold-lg">
+                        <i class="fas fa-rocket"></i> Start Now
+                    </a>
+                    <a href="{% url 'cservice:services' %}" class="btn btn-outline-gold btn-gold-lg">
+                        <i class="fas fa-cogs"></i> Browse Services
+                    </a>
+                </div>
+                <div class="hero-stats fade-in-up">
+                    <div class="hero-stat">
+                        <h3>15,000+</h3>
+                        <p>Traders Active</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3>$250M+</h3>
+                        <p>Trading Volume</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3>98.5%</h3>
+                        <p>Uptime</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-illustration fade-in-up">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="pair"><i class="fas fa-chart-line me-1"></i>EUR/USD</span>
+                            <span class="price"><i class="fas fa-arrow-up me-1"></i>1.08942</span>
+                        </div>
+                        <div class="chart-bars">
+                            {% for i in "123456789101112131415161718192021222324252627282930" %}
+                            <div class="bar" style="height:{% cycle '30' '50' '40' '70' '55' '80' '60' '90' '75' '45' '65' '85' '50' '70' '95' '60' '40' '75' '55' '88' '70' '50' '80' '65' '45' '72' '58' '82' '68' '48' %}px"></div>
+                            {% endfor %}
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--glass-border);padding-top:1rem;font-size:0.85rem;">
+                            <span style="color:var(--success);"><i class="fas fa-arrow-up"></i> +2.34% Today</span>
+                            <span style="color:var(--text-muted);">Vol: 1.2M</span>
+                        </div>
+                        <div class="floating-element ai-badge">
+                            <i class="fas fa-brain"></i>
+                            <span>AI Active</span>
+                        </div>
+                        <div class="floating-element roi-badge">
+                            <div class="roi-value">+47.8%</div>
+                            <div class="roi-label">Avg. ROI</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="section-padding" style="background:var(--secondary);">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-cogs"></i> Our Services</div>
+            <h2 class="section-title">Comprehensive <span class="text-gradient">Trading Solutions</span></h2>
+            <p class="section-subtitle">From EA development to prop firm management, we provide everything you need to succeed in algorithmic trading.</p>
+        </div>
+        <div class="features-grid">
+            {% for service in services %}
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|divisibleby:3 }}">
+                <div class="card-icon"><i class="fas fa-robot"></i></div>
+                <h5>{{ service.title }}</h5>
+                <p>{{ service.description|truncatewords:20 }}</p>
+            </div>
+            {% empty %}
+            <div class="card-glass" data-aos="fade-up">
+                <div class="card-icon"><i class="fas fa-code"></i></div>
+                <h5>Expert Advisor Development</h5>
+                <p>We convert your trading strategy into a fully automated EA for MT4/MT5.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                <h5>Custom Indicators</h5>
+                <p>Professional custom indicators designed to your exact trading specifications.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-icon"><i class="fas fa-robot"></i></div>
+                <h5>Trading Bots</h5>
+                <p>24/7 automated trading bots that execute your strategies without emotions.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="0">
+                <div class="card-icon"><i class="fas fa-history"></i></div>
+                <h5>Strategy Backtesting</h5>
+                <p>Rigorous backtesting of your strategies across multiple market conditions.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-icon"><i class="fas fa-handshake"></i></div>
+                <h5>Trading Consultation</h5>
+                <p>One-on-one consultation with experienced algorithmic trading professionals.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-icon"><i class="fas fa-microchip"></i></div>
+                <h5>Algorithm Optimization</h5>
+                <p>Fine-tune your algorithms for maximum performance and minimal drawdown.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up">
+                <div class="card-icon"><i class="fas fa-copy"></i></div>
+                <h5>Copy Trading</h5>
+                <p>Automatically copy top-performing traders with full risk management.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-icon"><i class="fas fa-trophy"></i></div>
+                <h5>Prop Firm Assistance</h5>
+                <p>Expert guidance and EAs designed specifically for prop firm challenges.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                <h5>Risk Management Tools</h5>
+                <p>Advanced risk management systems to protect your trading capital.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up">
+                <div class="card-icon"><i class="fas fa-signal"></i></div>
+                <h5>Signal Services</h5>
+                <p>Real-time trading signals with verified performance track records.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-icon"><i class="fas fa-book"></i></div>
+                <h5>Trading Journal</h5>
+                <p>Professional trading journal with advanced analytics and performance insights.</p>
+            </div>
+            <div class="card-glass" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                <h5>Portfolio Analysis</h5>
+                <p>Comprehensive portfolio analysis with risk metrics and optimization.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'cservice:services' %}" class="btn btn-outline-gold btn-gold-lg">View All Services <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3 col-6" data-aos="fade-up">
+                <div class="card-glass p-4">
+                    <h3 class="text-gradient" style="font-size:2.5rem;font-weight:900;">15K+</h3>
+                    <p style="color:var(--text-muted);margin:0;">Active Traders</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-glass p-4">
+                    <h3 style="font-size:2.5rem;font-weight:900;color:var(--success);">500+</h3>
+                    <p style="color:var(--text-muted);margin:0;">EA Strategies</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-glass p-4">
+                    <h3 class="text-gradient" style="font-size:2.5rem;font-weight:900;">98%</h3>
+                    <p style="color:var(--text-muted);margin:0;">Prop Pass Rate</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-glass p-4">
+                    <h3 style="font-size:2.5rem;font-weight:900;color:var(--success);">$250M+</h3>
+                    <p style="color:var(--text-muted);margin:0;">Trading Volume</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Academy Section -->
+<section class="section-padding" style="background:var(--secondary);">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-graduation-cap"></i> AlgoEdge Academy</div>
+            <h2 class="section-title">Master <span class="text-gradient">Algorithmic Trading</span></h2>
+            <p class="section-subtitle">Learn from industry experts with our comprehensive trading courses.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card-glass text-center">
+                    <div class="card-icon mx-auto"><i class="fas fa-book-open"></i></div>
+                    <h5>Forex & Price Action</h5>
+                    <p>Master the fundamentals of Forex trading and price action analysis.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-glass text-center">
+                    <div class="card-icon mx-auto"><i class="fas fa-brain"></i></div>
+                    <h5>Algorithmic Strategies</h5>
+                    <p>Learn to design, test, and deploy algorithmic trading strategies.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-glass text-center">
+                    <div class="card-icon mx-auto"><i class="fas fa-code"></i></div>
+                    <h5>MQL5 & Python</h5>
+                    <p>Code your own EAs in MQL5 and Python with hands-on projects.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4" data-aos="fade-up">
+            <a href="{% url 'learn:courses' %}" class="btn btn-gold btn-gold-lg">Explore Courses <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% if testimonials %}
+<section class="section-padding">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-star"></i> Testimonials</div>
+            <h2 class="section-title">Trusted by <span class="text-gradient">Traders Worldwide</span></h2>
+        </div>
+        <div class="row g-4">
+            {% for t in testimonials %}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|divisibleby:3 }}">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        {% for i in "12345" %}<i class="fas fa-star"></i>{% endfor %}
+                    </div>
+                    <p>{{ t.content }}</p>
+                    <div class="author">
+                        <div class="avatar">{{ t.name|first }}</div>
+                        <div>
+                            <h6>{{ t.name }}</h6>
+                            <span>{{ t.title }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="section-padding" style="background:var(--secondary);">
+    <div class="container">
+        <div class="row justify-content-center text-center" data-aos="fade-up">
+            <div class="col-lg-8">
+                <div class="section-tag justify-content-center"><i class="fas fa-rocket"></i> Get Started</div>
+                <h2 class="section-title">Ready to Transform Your <span class="text-gradient">Trading Journey</span>?</h2>
+                <p class="section-subtitle">Join thousands of traders who have already elevated their trading with AlgoEdge's intelligent solutions.</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                    <a href="{% url 'userauth:register' %}" class="btn btn-gold btn-gold-lg">
+                        <i class="fas fa-user-plus"></i> Create Free Account
+                    </a>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-gold btn-gold-lg">
+                        <i class="fas fa-headset"></i> Talk to Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

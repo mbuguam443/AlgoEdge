@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Downloads - AlgoEdge{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout" style="padding-top:72px;">
+  {% include 'dash/_sidebar.html' %}
+  <div class="dashboard-main">
+    <h4 class="mb-4"><i class="fas fa-download me-2" style="color:var(--accent-gold);"></i>Downloads</h4>
+    <div class="card-glass">
+      <p style="color:var(--text-muted);">Your purchased files available for download will appear here.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

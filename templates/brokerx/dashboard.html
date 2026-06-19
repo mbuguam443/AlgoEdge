@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Free EAs - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-shield-alt"></i> Free EA Program</div>
+            <h2 class="section-title">Get Premium EAs <span class="text-gradient">For Free</span></h2>
+            <p class="section-subtitle">Register a trading account through our partner broker and unlock premium Expert Advisors.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card-glass text-center">
+                    <div class="card-icon mx-auto" style="width:70px;height:70px;border-radius:50%;"><i class="fas fa-user-plus"></i></div>
+                    <h5>1. Register</h5>
+                    <p style="font-size:0.9rem;">Create an account with our trusted broker partner through our affiliate link.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-glass text-center">
+                    <div class="card-icon mx-auto" style="width:70px;height:70px;border-radius:50%;"><i class="fas fa-id-card"></i></div>
+                    <h5>2. Verify</h5>
+                    <p style="font-size:0.9rem;">Submit your MT4/MT5 account details for verification.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-glass text-center">
+                    <div class="card-icon mx-auto" style="width:70px;height:70px;border-radius:50%;"><i class="fas fa-download"></i></div>
+                    <h5>3. Download</h5>
+                    <p style="font-size:0.9rem;">Once verified, unlock and download premium EAs for free.</p>
+                </div>
+            </div>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="mt-5" data-aos="fade-up">
+            <div class="card-glass">
+                <h5 class="mb-4"><i class="fas fa-history me-2" style="color:var(--accent-gold);"></i>Your Verifications</h5>
+                {% if verifications %}
+                <div class="table-responsive">
+                    <table class="table table-algo">
+                        <thead>
+                            <tr>
+                                <th>Broker</th>
+                                <th>Account</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for v in verifications %}
+                            <tr>
+                                <td>{{ v.broker_name }}</td>
+                                <td>{{ v.account_number }}</td>
+                                <td>{{ v.account_type|upper }}</td>
+                                <td><span class="badge {% if v.status == 'verified' %}badge-green{% elif v.status == 'rejected' %}badge-danger{% else %}badge-gold{% endif %}">{{ v.get_status_display }}</span></td>
+                                <td style="font-size:0.85rem;">{{ v.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p style="color:var(--text-muted);">No verification requests yet.</p>
+                {% endif %}
+                <a href="{% url 'brokerx:verify' %}" class="btn btn-gold mt-3"><i class="fas fa-plus"></i> Submit Verification</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

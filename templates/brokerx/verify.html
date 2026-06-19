@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-shield-alt"></i> Verification</div>
+            <h2 class="section-title">Submit Broker <span class="text-gradient">Verification</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="card-glass">
+                    <p style="color:var(--text-secondary);" class="mb-4">Register a trading account through our <a href="{{ broker_affiliate_link }}" target="_blank" style="color:var(--accent-gold);">partner broker</a>, then submit your account details below to unlock free premium EAs.</p>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Broker Name</label>
+                                <input type="text" name="broker_name" class="form-control" placeholder="e.g., IC Markets, FTMO" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Number</label>
+                                <input type="text" name="account_number" class="form-control" placeholder="Your MT4/MT5 account number" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Type</label>
+                                <select name="account_type" class="form-control" required>
+                                    <option value="mt5">MT5</option>
+                                    <option value="mt4">MT4</option>
+                                    <option value="ctrader">cTrader</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Size ($)</label>
+                                <input type="number" name="account_size" class="form-control" placeholder="Optional">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Screenshot (Optional)</label>
+                                <input type="file" name="screenshot" class="form-control">
+                                <small style="color:var(--text-muted);">Upload a screenshot of your account for faster verification.</small>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold w-100 btn-gold-lg">Submit for Verification</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

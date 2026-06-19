@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Services - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-cogs"></i> Our Services</div>
+            <h2 class="section-title">Premium <span class="text-gradient">Trading Services</span></h2>
+            <p class="section-subtitle">End-to-end algorithmic trading solutions designed for profitability.</p>
+        </div>
+        <div class="row g-4">
+            {% for s in services %}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|divisibleby:3 }}">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="{{ s.icon|default:'fas fa-cogs' }}"></i></div>
+                    <h5>{{ s.title }}</h5>
+                    <p>{{ s.description }}</p>
+                    {% if s.price_from %}
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">${{ s.price_from|floatformat:0 }}</span></strong></p>
+                    {% endif %}
+                    <a href="{% url 'cservice:service_detail' slug=s.slug %}" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-md-4">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="fas fa-code"></i></div>
+                    <h5>Expert Advisor Development</h5>
+                    <p>We convert your trading strategy into a fully automated Expert Advisor for MT4/MT5 platforms with advanced risk management.</p>
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">$299</span></strong></p>
+                    <a href="#" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h5>Custom Indicators</h5>
+                    <p>Professional-grade custom indicators designed to your exact specifications for better market analysis.</p>
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">$149</span></strong></p>
+                    <a href="#" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="fas fa-robot"></i></div>
+                    <h5>Trading Bots</h5>
+                    <p>24/7 automated trading bots that execute your strategies without emotions or hesitation.</p>
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">$499</span></strong></p>
+                    <a href="#" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="fas fa-history"></i></div>
+                    <h5>Strategy Backtesting</h5>
+                    <p>Comprehensive backtesting across multiple market conditions with detailed performance reports.</p>
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">$99</span></strong></p>
+                    <a href="#" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="fas fa-trophy"></i></div>
+                    <h5>Prop Firm Assistance</h5>
+                    <p>Expert guidance and specialized EAs designed specifically to pass prop firm challenges.</p>
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">$399</span></strong></p>
+                    <a href="#" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass h-100">
+                    <div class="card-icon"><i class="fas fa-copy"></i></div>
+                    <h5>Copy Trading Setup</h5>
+                    <p>Professional copy trading infrastructure with signal management and performance tracking.</p>
+                    <p class="mt-3 mb-0"><strong>From <span class="text-gradient">$199</span></strong></p>
+                    <a href="#" class="btn btn-outline-gold w-100 mt-3">Learn More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-padding" style="background:var(--secondary);">
+    <div class="container">
+        <div class="row justify-content-center text-center" data-aos="fade-up">
+            <div class="col-lg-8">
+                <h2 class="section-title">Need a <span class="text-gradient">Custom Solution</span>?</h2>
+                <p class="section-subtitle">Tell us about your project and we'll create a tailored solution for your trading needs.</p>
+                <a href="{% url 'cservice:service_request' %}" class="btn btn-gold btn-gold-lg">Submit Request <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

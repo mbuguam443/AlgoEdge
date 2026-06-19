@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Copy Trading - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-copy"></i> Copy Trading</div>
+            <h2 class="section-title">Copy <span class="text-gradient">Top Performers</span></h2>
+            <p class="section-subtitle">Automatically replicate the trades of our verified master traders.</p>
+        </div>
+        <div class="row g-4">
+            {% for trader in traders %}
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card-glass h-100 text-center">
+                    <div class="card-icon mx-auto" style="width:80px;height:80px;border-radius:50%;font-size:2rem;">
+                        {% if trader.avatar %}
+                        <img src="{{ trader.avatar.url }}" alt="{{ trader.name }}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                        {% else %}
+                        {{ trader.name|first }}
+                        {% endif %}
+                    </div>
+                    <h5>{{ trader.name }}</h5>
+                    {% if trader.is_verified %}<span class="badge badge-green mb-2"><i class="fas fa-check-circle"></i> Verified</span>{% endif %}
+                    <p style="font-size:0.85rem;color:var(--text-secondary);">{{ trader.bio|truncatewords:15 }}</p>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div style="font-size:1.25rem;font-weight:800;color:var(--success);">{{ trader.roi }}%</div>
+                            <small style="color:var(--text-muted);">ROI</small>
+                        </div>
+                        <div class="col-6">
+                            <div style="font-size:1.25rem;font-weight:800;color:var(--accent-gold);">{{ trader.win_rate }}%</div>
+                            <small style="color:var(--text-muted);">Win Rate</small>
+                        </div>
+                        <div class="col-6">
+                            <div style="font-size:1.25rem;font-weight:800;color:var(--text-primary);">{{ trader.followers }}</div>
+                            <small style="color:var(--text-muted);">Followers</small>
+                        </div>
+                        <div class="col-6">
+                            <div style="font-size:1.25rem;font-weight:800;color:#ff4444;">{{ trader.max_drawdown }}%</div>
+                            <small style="color:var(--text-muted);">Max DD</small>
+                        </div>
+                    </div>
+                    <a href="{% url 'copytrade:trader_detail' slug=trader.slug %}" class="btn btn-gold w-100">Start Copying</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center" style="color:var(--text-muted);">
+                <i class="fas fa-copy" style="font-size:3rem;margin-bottom:1rem;"></i>
+                <p>No traders available yet. Coming soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

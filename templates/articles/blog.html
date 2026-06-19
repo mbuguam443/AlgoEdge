@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-newspaper"></i> AlgoEdge Blog</div>
+            <h2 class="section-title">Trading Insights & <span class="text-gradient">Market Analysis</span></h2>
+            <p class="section-subtitle">Stay ahead with expert analysis, trading tips, and industry news.</p>
+        </div>
+
+        {% if featured %}
+        <div class="row g-4 mb-5" data-aos="fade-up">
+            {% for post in featured %}
+            <div class="col-md-4">
+                <div class="card-blog h-100">
+                    <div class="blog-image" style="background:linear-gradient(135deg,var(--secondary),var(--primary));">
+                        {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="fas fa-newspaper" style="font-size:3rem;color:var(--accent-gold);opacity:0.3;"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="blog-body">
+                        <div class="blog-meta">
+                            <span class="category">{{ post.category.name }}</span>
+                            <span>{{ post.published_at|date:"M d, Y" }}</span>
+                        </div>
+                        <h5>{{ post.title }}</h5>
+                        <p>{{ post.excerpt|default:post.content|truncatewords:20 }}</p>
+                        <a href="{% url 'articles:blog_detail' slug=post.slug %}" class="btn btn-outline-gold w-100">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row g-4">
+            {% for post in posts %}
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card-blog h-100">
+                    <div class="blog-image" style="background:linear-gradient(135deg,var(--secondary),var(--primary));">
+                        {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="fas fa-chart-line" style="font-size:3rem;color:var(--accent-gold);opacity:0.3;"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="blog-body">
+                        <div class="blog-meta">
+                            <span class="category">{{ post.category.name }}</span>
+                            <span>{{ post.published_at|date:"M d, Y" }}</span>
+                        </div>
+                        <h5>{{ post.title }}</h5>
+                        <p>{{ post.excerpt|default:post.content|truncatewords:20 }}</p>
+                        <a href="{% url 'articles:blog_detail' slug=post.slug %}" class="btn btn-outline-gold w-100">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center" style="color:var(--text-muted);">
+                <i class="fas fa-newspaper" style="font-size:3rem;margin-bottom:1rem;"></i>
+                <p>No blog posts yet. Check back for updates!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

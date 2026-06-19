@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-user-edit"></i> Profile</div>
+            <h2 class="section-title">Edit Your <span class="text-gradient">Profile</span></h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="form-glass">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Avatar</label>
+                                {{ form.avatar }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Country</label>
+                                {{ form.country }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">MT4 Account</label>
+                                {{ form.mt4_account }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">MT5 Account</label>
+                                {{ form.mt5_account }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Bio</label>
+                                {{ form.bio }}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold btn-gold-lg w-100">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

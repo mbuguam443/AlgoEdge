@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="card-glass">
+                    <div class="card-icon mb-4"><i class="{{ service.icon|default:'fas fa-cogs' }}"></i></div>
+                    <h2>{{ service.title }}</h2>
+                    <p style="color:var(--text-secondary);font-size:1.1rem;">{{ service.description }}</p>
+                    {% if service.price_from %}
+                    <p class="h4 mt-4">Starting from <span class="text-gradient">${{ service.price_from|floatformat:0 }}</span></p>
+                    {% endif %}
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="{% url 'cservice:service_request' %}" class="btn btn-gold btn-gold-lg">Request Service</a>
+                        <a href="{% url 'home:contact' %}" class="btn btn-outline-gold btn-gold-lg">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

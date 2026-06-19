@@ -1,0 +1,13 @@
+django>=5.0,<6.0
+pillow
+whitenoise
+gunicorn
+psycopg2-binary
+django-crispy-forms
+crispy-bootstrap5
+django-allauth
+django-ratelimit
+django-robots
+django-cleanup
+django-storages
+django-sitemaps

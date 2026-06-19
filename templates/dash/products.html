@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Products - AlgoEdge{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout" style="padding-top:72px;">
+  {% include 'dash/_sidebar.html' %}
+  <div class="dashboard-main">
+    <h4 class="mb-4"><i class="fas fa-box me-2" style="color:var(--accent-gold);"></i>My Products</h4>
+    <div class="card-glass">
+      <p style="color:var(--text-muted);">Products you've purchased will appear here.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

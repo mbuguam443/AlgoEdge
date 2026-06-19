@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pricing - AlgoEdge{% endblock %}
+
+{% block content %}
+<section class="section-padding" style="padding-top:120px;">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-tag"><i class="fas fa-tags"></i> Pricing</div>
+            <h2 class="section-title">Simple, <span class="text-gradient">Transparent Pricing</span></h2>
+            <p class="section-subtitle">Choose the plan that fits your trading needs.</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4" data-aos="fade-up">
+                <div class="card-pricing text-center">
+                    <h5>Starter</h5>
+                    <div class="price">$49<span>/mo</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 1 EA License</li>
+                        <li><i class="fas fa-check"></i> Basic Analytics</li>
+                        <li><i class="fas fa-check"></i> Community Access</li>
+                        <li><i class="fas fa-check"></i> Email Support</li>
+                        <li><i class="fas fa-check"></i> 1 Strategy Backtest</li>
+                    </ul>
+                    <a href="{% url 'userauth:register' %}" class="btn btn-outline-gold w-100">Get Started</a>
+                </div>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-pricing featured text-center">
+                    <div class="pricing-badge">Most Popular</div>
+                    <h5>Professional</h5>
+                    <div class="price">$149<span>/mo</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 5 EA Licenses</li>
+                        <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                        <li><i class="fas fa-check"></i> Priority Support</li>
+                        <li><i class="fas fa-check"></i> Copy Trading Access</li>
+                        <li><i class="fas fa-check"></i> Prop Firm Tools</li>
+                        <li><i class="fas fa-check"></i> Unlimited Backtesting</li>
+                        <li><i class="fas fa-check"></i> API Access</li>
+                    </ul>
+                    <a href="{% url 'userauth:register' %}" class="btn btn-gold w-100">Get Started</a>
+                </div>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-pricing text-center">
+                    <h5>Enterprise</h5>
+                    <div class="price">$499<span>/mo</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Unlimited EAs</li>
+                        <li><i class="fas fa-check"></i> Full Analytics Suite</li>
+                        <li><i class="fas fa-check"></i> Dedicated Support</li>
+                        <li><i class="fas fa-check"></i> Custom Development</li>
+                        <li><i class="fas fa-check"></i> White-Label Options</li>
+                        <li><i class="fas fa-check"></i> 24/7 Monitoring</li>
+                        <li><i class="fas fa-check"></i> Multiple Accounts</li>
+                    </ul>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-gold w-100">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
