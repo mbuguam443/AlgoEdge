@@ -6,8 +6,6 @@ dist/
 build/
 
 # Django
-*.sqlite3
-*.db
 local_settings.py
 
 # IDE
