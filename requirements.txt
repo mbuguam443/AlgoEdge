@@ -2,5 +2,4 @@ django>=4.2,<4.3
 gunicorn>=21.2.0
 psycopg2-binary>=2.9.9
 pillow>=10.2.0
-mysqlclient>=2.2.4
 pymysql>=1.1.0
