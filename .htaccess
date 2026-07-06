@@ -1,49 +1,29 @@
-# AlgoEdge — .htaccess for algoedge.greatjourns.com
-# cPanel user: greatjou | App root: /home/greatjou/algoedge/
-
-# Disable directory listing (stops file tree)
+# AlgoEdge for algoedge.greatjourns.com
 Options -Indexes
-
-# Handle Python app via Passenger
 PassengerEnabled On
-PassengerAppRoot /home/greatjou/algoedge
-# UPDATE the path below to match your cPanel Python App virtualenv:
-PassengerPython /home/greatjou/virtualenv/algoedge/3.12/bin/python
-
-# Serve static/media directly (bypass Passenger for performance)
-Alias /static/ /home/greatjou/algoedge/staticfiles/
-<Directory /home/greatjou/algoedge/staticfiles>
+PassengerAppRoot /home/greatjou/algoedge.greatjourns.com
+PassengerPython /home/greatjou/virtualenv/algoedge.greatjourns.com/3.12/bin/python
+Alias /static/ /home/greatjou/algoedge.greatjourns.com/staticfiles/
+<Directory /home/greatjou/algoedge.greatjourns.com/staticfiles>
     Require all granted
 </Directory>
-
-Alias /media/ /home/greatjou/algoedge/media/
-<Directory /home/greatjou/algoedge/media>
+Alias /media/ /home/greatjou/algoedge.greatjourns.com/media/
+<Directory /home/greatjou/algoedge.greatjourns.com/media>
     Require all granted
 </Directory>
-
-# Block access to sensitive files
 <FilesMatch "\.(py|pyc|sqlite3|env|gitignore|md|txt)$">
     Require all denied
 </FilesMatch>
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    # Force HTTPS
     RewriteCond %{HTTPS} off
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Block direct access to Django app directories
     RewriteRule ^(algoedge|home|userauth|learn|shop|cservice|articles|dash|copytrade|pfarm|automate|brokerx|refer|alerts|paygate|metrics)/ - [F,L]
 </IfModule>
-
-# Gzip
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
 </IfModule>
-
-# Cache static assets
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresByType text/css "access plus 1 year"
