@@ -3,8 +3,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load .env file from project root
+# Load .env (or .env.example as fallback for cPanel zip uploads)
 _env_file = BASE_DIR / '.env'
+if not _env_file.exists():
+    _env_file = BASE_DIR / '.env.example'
 if _env_file.exists():
     with open(_env_file) as _f:
         for _line in _f:
