@@ -1,5 +1,14 @@
-# AlgoEdge — Extra rules to append to cPanel auto-generated .htaccess
-# Copy everything below into the .htaccess cPanel creates at /home/greatjou/algoedge/
+# AlgoEdge — .htaccess for algoedge.greatjourns.com
+# cPanel user: greatjou | App root: /home/greatjou/algoedge/
+
+# Disable directory listing (stops file tree)
+Options -Indexes
+
+# Handle Python app via Passenger
+PassengerEnabled On
+PassengerAppRoot /home/greatjou/algoedge
+# UPDATE the path below to match your cPanel Python App virtualenv:
+PassengerPython /home/greatjou/virtualenv/algoedge/3.12/bin/python
 
 # Serve static/media directly (bypass Passenger for performance)
 Alias /static/ /home/greatjou/algoedge/staticfiles/
