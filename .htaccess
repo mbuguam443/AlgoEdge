@@ -1,15 +1,7 @@
-# AlgoEdge - Apache config for cPanel (algoedge.greatjourns.com)
-# cPanel user: greatjou | App root: /home/greatjou/algoedge/
+# AlgoEdge — Extra rules to append to cPanel auto-generated .htaccess
+# Copy everything below into the .htaccess cPanel creates at /home/greatjou/algoedge/
 
-# Disable directory listing
-Options -Indexes
-
-# Handle Python app via Passenger
-PassengerEnabled On
-PassengerAppRoot /home/greatjou/algoedge
-PassengerPython /home/greatjou/virtualenv/algoedge/bin/python
-
-# Serve static files directly (performance)
+# Serve static/media directly (bypass Passenger for performance)
 Alias /static/ /home/greatjou/algoedge/staticfiles/
 <Directory /home/greatjou/algoedge/staticfiles>
     Require all granted
@@ -49,6 +41,6 @@ Alias /media/ /home/greatjou/algoedge/media/
     ExpiresByType application/javascript "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
-    Compress image/svg+xml "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
     ExpiresByType image/x-icon "access plus 1 year"
 </IfModule>
