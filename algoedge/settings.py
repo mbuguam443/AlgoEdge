@@ -90,6 +90,21 @@ DATABASES = {
     }
 }
 
+# MySQL for production (cPanel)
+if os.environ.get('DB_NAME'):
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ.get('DB_USER', os.environ['DB_NAME']),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '3306'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
+    }
+
 if 'DATABASE_URL' in os.environ:
     import re
     db_url = os.environ['DATABASE_URL']
