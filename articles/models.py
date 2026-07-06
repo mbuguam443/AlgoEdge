@@ -23,7 +23,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=300)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
     content = models.TextField()
     excerpt = models.CharField(max_length=500, blank=True)
     featured_image = models.ImageField(upload_to='blog/', blank=True, null=True)

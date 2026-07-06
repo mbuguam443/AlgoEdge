@@ -1,21 +1,22 @@
-# AlgoEdge - Apache config for cPanel
+# AlgoEdge - Apache config for cPanel (algoedge.greatjourns.com)
+# cPanel user: greatjou | App root: /home/greatjou/algoedge/
 
 # Disable directory listing
 Options -Indexes
 
 # Handle Python app via Passenger
 PassengerEnabled On
-PassengerAppRoot .
-PassengerPython /home/ALGOEDGE/virtualenv/bin/python
+PassengerAppRoot /home/greatjou/algoedge
+PassengerPython /home/greatjou/virtualenv/algoedge/bin/python
 
 # Serve static files directly (performance)
-Alias /static/ /home/ALGOEDGE/repo/staticfiles/
-<Directory /home/ALGOEDGE/repo/staticfiles>
+Alias /static/ /home/greatjou/algoedge/staticfiles/
+<Directory /home/greatjou/algoedge/staticfiles>
     Require all granted
 </Directory>
 
-Alias /media/ /home/ALGOEDGE/repo/media/
-<Directory /home/ALGOEDGE/repo/media>
+Alias /media/ /home/greatjou/algoedge/media/
+<Directory /home/greatjou/algoedge/media>
     Require all granted
 </Directory>
 
@@ -32,7 +33,7 @@ Alias /media/ /home/ALGOEDGE/repo/media/
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Block access to internal directories
+    # Block direct access to Django app directories
     RewriteRule ^(algoedge|home|userauth|learn|shop|cservice|articles|dash|copytrade|pfarm|automate|brokerx|refer|alerts|paygate|metrics)/ - [F,L]
 </IfModule>
 
@@ -48,6 +49,6 @@ Alias /media/ /home/ALGOEDGE/repo/media/
     ExpiresByType application/javascript "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
+    Compress image/svg+xml "access plus 1 year"
     ExpiresByType image/x-icon "access plus 1 year"
 </IfModule>
