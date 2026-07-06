@@ -29,7 +29,7 @@ with zipfile.ZipFile(zip_path, 'r') as z:
 repo_root = os.path.join(extract_path, 'AlgoEdge-master')
 
 print("Copying files (overwriting)...")
-skip_files = {'.env', 'db.sqlite3', 'update.py'}
+skip_files = {'.env', 'db.sqlite3', 'update.py', '.htaccess'}
 for root, dirs, files in os.walk(repo_root):
     rel = os.path.relpath(root, repo_root)
     if rel == '.':
