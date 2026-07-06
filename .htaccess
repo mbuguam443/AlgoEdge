@@ -3,8 +3,8 @@ Options -Indexes
 PassengerEnabled On
 PassengerAppRoot /home/greatjou/algoedge.greatjourns.com
 PassengerPython /home/greatjou/virtualenv/algoedge.greatjourns.com/3.12/bin/python
-Alias /static/ /home/greatjou/algoedge.greatjourns.com/staticfiles/
-<Directory /home/greatjou/algoedge.greatjourns.com/staticfiles>
+Alias /static/ /home/greatjou/algoedge.greatjourns.com/static_assets/
+<Directory /home/greatjou/algoedge.greatjourns.com/static_assets>
     Require all granted
 </Directory>
 Alias /media/ /home/greatjou/algoedge.greatjourns.com/media/

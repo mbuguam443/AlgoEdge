@@ -16,7 +16,7 @@ print("[1/3] Running migrations...")
 call_command('migrate', '--noinput')
 
 print("[2/3] Collecting static files...")
-static_dir = os.path.join(BASE_DIR, 'staticfiles')
+static_dir = os.path.join(BASE_DIR, 'static_assets')
 os.makedirs(static_dir, exist_ok=True)
 call_command('collectstatic', '--noinput')
 
