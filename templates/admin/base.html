@@ -1,0 +1,330 @@
+{% load i18n static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+{% block dark-mode-vars %}
+  <link rel="stylesheet" href="{% static "admin/css/dark_mode.css" %}">
+{% endblock %}
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
+{% block extrahead %}{% endblock %}
+{% block responsive %}
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="{% static "admin/css/responsive.css" %}">
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
+{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+    --primary: #0A0F1F; --secondary: #111827; --accent-gold: #D4AF37;
+    --accent-gold-light: #E5C85F; --accent-gold-dark: #B8960F;
+    --success: #00C853; --success-dark: #009624; --danger: #EF4444;
+    --text-primary: #FFFFFF; --text-secondary: #94A3B8; --text-muted: #64748B;
+    --border-color: rgba(212,175,55,0.15); --glass-bg: rgba(17,24,39,0.8);
+    --glass-border: rgba(212,175,55,0.1); --card-bg: rgba(17,24,39,0.9);
+    --gradient-gold: linear-gradient(135deg,#D4AF37,#E5C85F,#B8960F);
+    --gradient-card: linear-gradient(145deg,rgba(17,24,39,0.95),rgba(10,15,31,0.95));
+    --shadow-glow: 0 0 30px rgba(212,175,55,0.1);
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-xl: 24px;
+    --font-primary: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+    font-family: var(--font-primary); background: var(--primary); color: var(--text-primary);
+    overflow-x: hidden; line-height: 1.6;
+}
+::selection { background: var(--accent-gold); color: var(--primary); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--primary); }
+::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 3px; }
+a { color: var(--accent-gold); text-decoration: none; }
+a:hover { color: var(--accent-gold-light); }
+.text-gradient {
+    background: var(--gradient-gold); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
+}
+#container { display: flex; min-height: 100vh; }
+.dashboard-sidebar {
+    width: 280px; background: var(--secondary); border-right: 1px solid var(--glass-border);
+    padding: 2rem 1rem; position: fixed; top: 0; left: 0; height: 100vh;
+    overflow-y: auto; z-index: 100; display: flex; flex-direction: column;
+}
+.dashboard-sidebar .sidebar-brand {
+    text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+.dashboard-sidebar .sidebar-brand img { height: 35px; margin-bottom: 0.5rem; }
+.dashboard-sidebar .sidebar-brand h6 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }
+.dashboard-sidebar .sidebar-label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); font-weight: 600; padding: 0.75rem 1rem 0.5rem;
+}
+.dashboard-sidebar .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem;
+    color: var(--text-secondary); text-decoration: none; border-radius: var(--radius-sm);
+    transition: var(--transition); margin-bottom: 2px; font-size: 0.9rem; font-weight: 500;
+}
+.dashboard-sidebar .nav-item:hover,
+.dashboard-sidebar .nav-item.active,
+.dashboard-sidebar .nav-item.current-model {
+    background: rgba(212,175,55,0.1); color: var(--accent-gold);
+}
+.dashboard-sidebar .nav-item i { width: 20px; text-align: center; font-size: 0.9rem; }
+.dashboard-sidebar .sidebar-divider {
+    border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0;
+}
+.dashboard-sidebar .sidebar-bottom {
+    margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--glass-border);
+}
+.dashboard-sidebar .sidebar-bottom .nav-item { font-size: 0.85rem; }
+.dashboard-sidebar .nav-item.logout-btn {
+    background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-family: var(--font-primary);
+}
+.dashboard-main {
+    margin-left: 280px; flex: 1; padding: 2rem; min-height: 100vh; width: calc(100% - 280px);
+}
+.dashboard-main .top-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border);
+}
+.dashboard-main .top-bar h4 {
+    font-weight: 800; color: var(--text-primary); margin: 0; font-size: 1.35rem;
+}
+.dashboard-main .top-bar .user-info {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--text-secondary); font-size: 0.9rem;
+}
+.dashboard-main .top-bar .user-info .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(212,175,55,0.15); color: var(--accent-gold);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+}
+.admin-breadcrumbs {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;
+    color: var(--text-muted); font-size: 0.85rem; padding: 0.75rem 1rem;
+    background: var(--gradient-card); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+}
+.admin-breadcrumbs a { color: var(--accent-gold); }
+.admin-breadcrumbs a:hover { color: var(--accent-gold-light); }
+.admin-breadcrumbs .separator { color: var(--text-muted); }
+.messagelist { list-style: none; margin-bottom: 1.5rem; }
+.messagelist li {
+    background: var(--gradient-card); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md); padding: 12px 20px 12px 45px;
+    margin-bottom: 0.75rem; color: var(--text-primary); position: relative;
+    box-shadow: var(--shadow-card);
+}
+.messagelist li::before {
+    position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+    font-family: 'Font Awesome 6 Free'; font-weight: 900;
+}
+.messagelist li.success { border-left: 4px solid var(--success); }
+.messagelist li.success::before { content: '\f00c'; color: var(--success); }
+.messagelist li.error { border-left: 4px solid var(--danger); }
+.messagelist li.error::before { content: '\f00d'; color: var(--danger); }
+.messagelist li.warning { border-left: 4px solid #F59E0B; }
+.messagelist li.warning::before { content: '\f071'; color: #F59E0B; }
+.messagelist li.info { border-left: 4px solid var(--accent-gold); }
+.messagelist li.info::before { content: '\f05a'; color: var(--accent-gold); }
+#content { width: 100%; }
+#content h1, #content h2 { color: var(--text-primary); font-weight: 700; }
+.content-card {
+    background: var(--gradient-card); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-card);
+    margin-bottom: 1.5rem;
+}
+table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden;
+}
+table thead th {
+    background: var(--secondary); color: var(--accent-gold); font-weight: 600;
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 12px 15px; border-bottom: 1px solid var(--glass-border);
+}
+table thead th a { color: var(--accent-gold); }
+table tbody td {
+    background: rgba(10,15,31,0.6); color: var(--text-secondary);
+    padding: 12px 15px; border-bottom: 1px solid rgba(212,175,55,0.05);
+}
+table tbody tr:hover td { background: rgba(212,175,55,0.05); }
+table tbody tr.selected td { background: rgba(212,175,55,0.1); }
+input, textarea, select {
+    font-family: var(--font-primary); background: rgba(10,15,31,0.8) !important;
+    border: 1px solid var(--glass-border) !important; border-radius: var(--radius-sm) !important;
+    color: var(--text-primary) !important; padding: 8px 12px;
+    transition: var(--transition);
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--accent-gold) !important; box-shadow: 0 0 0 2px rgba(212,175,55,0.15) !important;
+    outline: none;
+}
+.button, input[type=submit], input[type=button], a.button {
+    background: var(--accent-gold); color: var(--primary); border: none;
+    border-radius: var(--radius-sm); padding: 10px 20px; font-family: var(--font-primary);
+    font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition);
+}
+.button:hover, input[type=submit]:hover, input[type=button]:hover, a.button:hover {
+    background: var(--accent-gold-light); transform: translateY(-1px); box-shadow: var(--shadow-glow);
+}
+.button.default, input[type=submit].default {
+    background: var(--gradient-gold); font-weight: 700;
+}
+.submit-row { background: var(--secondary); border-top: 1px solid var(--glass-border); padding: 15px 20px; border-radius: 0 0 var(--radius-md) var(--radius-md); margin-top: 1rem; }
+.errornote {
+    background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);
+    color: var(--danger); border-radius: var(--radius-md); padding: 12px 20px; margin-bottom: 1rem;
+}
+.form-row { border-bottom: 1px solid rgba(212,175,55,0.08); padding: 12px 0; }
+.aligned label { color: var(--text-secondary); font-weight: 500; font-size: 0.85rem; }
+.help, p.help { color: var(--text-muted); font-size: 0.8rem; }
+.paginator {
+    background: var(--secondary); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md); padding: 12px 20px; color: var(--text-secondary);
+    margin-top: 1rem; font-size: 0.85rem;
+}
+.paginator a { color: var(--accent-gold); background: rgba(212,175,55,0.1); padding: 6px 14px; border-radius: var(--radius-sm); }
+.paginator a:hover { background: rgba(212,175,55,0.2); }
+.paginator .this-page { background: var(--accent-gold); color: var(--primary); font-weight: 700; padding: 6px 14px; border-radius: var(--radius-sm); }
+.object-tools { margin-bottom: 1rem; }
+.object-tools a { background: var(--accent-gold); color: var(--primary); font-weight: 700; border-radius: var(--radius-sm); padding: 8px 16px; font-size: 0.8rem; }
+.object-tools a:hover { background: var(--accent-gold-light); }
+.module { margin-bottom: 1.5rem; }
+.module h2, .module caption { background: var(--secondary); color: var(--accent-gold); font-weight: 700; font-size: 0.9rem; padding: 10px 15px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; border-bottom: 1px solid var(--glass-border); }
+.inline-group { background: var(--gradient-card); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
+.selector-available, .selector-chosen { background: var(--gradient-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 10px; }
+.selector-chosen h2 { background: var(--accent-gold); color: var(--primary); border-radius: var(--radius-sm); }
+.calendarbox, .clockbox { background: var(--secondary); border: 1px solid var(--glass-border); border-radius: var(--radius-md); }
+.calendarbox .calendar-caption { color: var(--accent-gold); font-weight: 700; }
+.calendarbox .today a { background: var(--accent-gold); color: var(--primary) !important; border-radius: 50%; }
+#changelist-filter { background: var(--gradient-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; }
+#changelist-filter h2 { background: transparent; color: var(--accent-gold); padding: 0 0 0.75rem; border-bottom: 1px solid var(--glass-border); margin-bottom: 0.75rem; }
+#changelist-filter h3 { color: var(--text-primary); font-weight: 600; font-size: 0.85rem; margin-top: 0.75rem; }
+#changelist-filter li a { color: var(--text-secondary); padding: 4px 0; display: block; font-size: 0.85rem; }
+#changelist-filter li.selected a { color: var(--accent-gold); font-weight: 600; }
+.quiet, .mini { color: var(--text-muted); }
+.addlink { color: var(--success); }
+.changelink { color: var(--accent-gold); }
+.deletelink { color: var(--danger); }
+.color-theme-toggle { display: none !important; }
+#nav-sidebar { display: none; }
+#toggle-nav-sidebar { display: none; }
+@media (max-width: 991px) {
+    .dashboard-sidebar { width: 240px; }
+    .dashboard-main { margin-left: 240px; width: calc(100% - 240px); padding: 1rem; }
+}
+@media (max-width: 767px) {
+    .dashboard-sidebar { display: none; }
+    .dashboard-main { margin-left: 0; width: 100%; padding: 1rem; }
+}
+</style>
+</head>
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}" data-admin-utc-offset="{% now "Z" %}">
+<a href="#content-start" class="skip-to-content-link" style="position:absolute;left:-9999px;">{% translate 'Skip to main content' %}</a>
+
+<div id="container">
+
+{% block sidebar_layout %}
+{% if not is_popup %}
+<div class="dashboard-sidebar">
+    <div class="sidebar-brand">
+        <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" onerror="this.style.display='none'">
+        <h6 class="text-gradient">Admin Panel</h6>
+    </div>
+
+    <div class="sidebar-label">{% translate 'Navigation' %}</div>
+    <a href="{% url 'admin:index' %}" class="nav-item {% if request.path == '/admin/' or request.path == '/admin' %}active{% endif %}">
+        <i class="fas fa-th-large"></i>{% translate 'Dashboard' %}
+    </a>
+
+    {% block nav-sidebar %}
+        {% include "admin/app_list.html" with app_list=available_apps show_changelinks=False %}
+    {% endblock %}
+
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-bottom">
+        {% if site_url %}
+        <a href="{{ site_url }}" class="nav-item"><i class="fas fa-globe"></i>{% translate 'View site' %}</a>
+        {% endif %}
+        {% if user.is_active and user.is_staff %}
+            {% url 'django-admindocs-docroot' as docsroot %}
+            {% if docsroot %}
+            <a href="{{ docsroot }}" class="nav-item"><i class="fas fa-book"></i>{% translate 'Documentation' %}</a>
+            {% endif %}
+        {% endif %}
+        {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}" class="nav-item"><i class="fas fa-key"></i>{% translate 'Change password' %}</a>
+        {% endif %}
+        <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="nav-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i>{% translate 'Log out' %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endif %}{% endblock %}
+
+<div class="dashboard-main">
+    {% if not is_popup %}
+    <div class="top-bar">
+        {% block content_title %}
+        <h4>{% if title %}{{ title }}{% else %}{{ site_header|default:_('Django administration') }}{% endif %}</h4>
+        {% endblock %}
+        <div class="user-info">
+            <div class="avatar">{{ user.get_short_name|first|default:user.get_username|first|upper }}</div>
+            <span>{% firstof user.get_short_name user.get_username %}</span>
+        </div>
+    </div>
+
+    {% block breadcrumbs %}
+    <div class="admin-breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+        {% if title %} <span class="separator">/</span> {{ title }}{% endif %}
+    </div>
+    {% endblock %}
+    {% endif %}
+
+    <div id="content-start" class="content" tabindex="-1">
+        {% block messages %}
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}</ul>
+        {% endif %}
+        {% endblock messages %}
+
+        <div id="content" class="{% block coltype %}colM{% endblock %}">
+            {% block pretitle %}{% endblock %}
+            {% block content_subtitle %}{% if subtitle %}<h2>{{ subtitle }}</h2>{% endif %}{% endblock %}
+            {% block content %}
+                {% block object-tools %}{% endblock %}
+                {{ content }}
+            {% endblock %}
+            {% block sidebar %}{% endblock %}
+            <br class="clear">
+        </div>
+
+        {% block footer %}{% endblock %}
+    </div>
+</div>
+
+</div>
+
+<script src="{% static "admin/js/theme.js" %}" defer></script>
+<script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -3,106 +3,71 @@
 
 {% block extrastyle %}{{ block.super }}
 <style>
-    .app-list { display: grid; gap: 12px; }
+    .app-list { display: grid; gap: 15px; }
     .app-item {
-        background: var(--gradient-card);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-lg);
-        padding: 1.25rem 1.5rem;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        background: var(--gradient-card); border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+        transition: var(--transition); display: flex; align-items: center;
+        justify-content: space-between; cursor: pointer;
     }
     .app-item:hover {
-        border-color: rgba(212,175,55,0.3);
-        transform: translateY(-2px);
+        border-color: rgba(212,175,55,0.3); transform: translateY(-2px);
         box-shadow: var(--shadow-glow);
     }
-    .app-item .app-name {
-        display: flex;
-        align-items: center;
-        gap: 14px;
+    .app-item .app-left { display: flex; align-items: center; gap: 14px; }
+    .app-item .app-left .app-icon {
+        width: 44px; height: 44px; background: rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.2); border-radius: var(--radius-md);
+        display: flex; align-items: center; justify-content: center;
+        color: var(--accent-gold); font-size: 1.1rem; flex-shrink: 0;
     }
-    .app-item .app-name i {
-        width: 38px;
-        height: 38px;
-        background: rgba(212,175,55,0.1);
-        border: 1px solid rgba(212,175,55,0.2);
-        border-radius: var(--radius-md);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--accent-gold);
-        font-size: 1rem;
-        flex-shrink: 0;
+    .app-item .app-left .app-info {}
+    .app-item .app-left .app-info .app-name { font-weight: 700; color: var(--text-primary); font-size: 1rem; }
+    .app-item .app-left .app-info .app-label { font-weight: 400; color: var(--text-muted); font-size: 0.8rem; }
+    .app-item .app-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .app-item .app-right a {
+        padding: 6px 14px; border-radius: var(--radius-sm); font-size: 0.85rem;
+        font-weight: 500; text-decoration: none; transition: var(--transition);
     }
-    .app-item .app-name .app-label {
-        font-weight: 700;
-        color: var(--text-primary);
-        font-size: 1rem;
+    .app-item .app-right a.view-link {
+        color: var(--text-secondary); border: 1px solid transparent;
     }
-    .app-item .app-name .app-label small {
-        font-weight: 400;
-        color: var(--text-muted);
-        font-size: 0.8rem;
-        margin-left: 8px;
-    }
-    .app-item .app-models {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    .app-item .app-models a {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        font-weight: 500;
-        text-decoration: none;
-        padding: 4px 12px;
-        border-radius: var(--radius-sm);
-        border: 1px solid transparent;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .app-item .app-models a:hover {
-        color: var(--accent-gold);
-        border-color: rgba(212,175,55,0.2);
+    .app-item .app-right a.view-link:hover {
+        color: var(--accent-gold); border-color: rgba(212,175,55,0.2);
         background: rgba(212,175,55,0.05);
     }
-    .app-item .app-models a.addlink {
-        color: var(--success);
-        border-color: rgba(0,200,83,0.2);
+    .app-item .app-right a.add-link {
+        background: rgba(0,200,83,0.15); color: var(--success); border: 1px solid rgba(0,200,83,0.2);
     }
-    .app-item .app-models a.addlink:hover {
-        background: rgba(0,200,83,0.1);
-        border-color: rgba(0,200,83,0.3);
+    .app-item .app-right a.add-link:hover { background: rgba(0,200,83,0.25); }
+    .app-item .app-right .model-count {
+        color: var(--text-muted); font-size: 0.75rem;
+        background: rgba(100,116,139,0.15); padding: 2px 10px; border-radius: 20px;
     }
-    .app-item .app-models a.changelink {
-        color: var(--accent-gold);
-        border-color: rgba(212,175,55,0.2);
+    .recent-card {
+        background: var(--gradient-card); border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-card);
     }
-    .app-item .app-models a.changelink:hover {
-        background: rgba(212,175,55,0.1);
+    .recent-card h2 {
+        font-size: 1rem; font-weight: 700; color: var(--accent-gold);
+        border-bottom: 1px solid var(--glass-border); padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
     }
-    .app-item .app-models .model-count {
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        background: rgba(100,116,139,0.15);
-        padding: 2px 8px;
-        border-radius: 20px;
+    .recent-card .action-item {
+        padding: 0.6rem 0; border-bottom: 1px solid rgba(212,175,55,0.05);
+        font-size: 0.85rem;
     }
-    #content-main .module { background: transparent; }
-    #content-main .module table { display: none; }
-    #content-main .module caption { display: none; }
-    h1 { margin-bottom: 1.5rem !important; }
-    .dashboard #content { display: flex; gap: 20px; align-items: flex-start; }
-    @media (max-width: 768px) {
-        .app-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-        .app-item .app-models { width: 100%; }
-        .dashboard #content { flex-direction: column; }
+    .recent-card .action-item:last-child { border-bottom: none; }
+    .recent-card .action-item a { color: var(--accent-gold); font-weight: 500; }
+    .recent-card .action-item .mini { color: var(--text-muted); font-size: 0.75rem; }
+    .dashboard-grid { display: flex; gap: 20px; align-items: flex-start; }
+    .dashboard-grid .main-col { flex: 1; min-width: 0; }
+    .dashboard-grid .side-col { width: 320px; flex-shrink: 0; }
+    @media (max-width: 991px) {
+        .dashboard-grid { flex-direction: column; }
+        .dashboard-grid .side-col { width: 100%; }
+        .app-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+        .app-item .app-right { width: 100%; }
     }
 </style>
 {% endblock %}
@@ -111,81 +76,71 @@
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 
-{% block nav-breadcrumbs %}{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
 
 {% block nav-sidebar %}{% endblock %}
 
 {% block content %}
-<div id="content-main">
-  <div class="app-list">
-    {% for app in app_list %}
-    <div class="app-item">
-      <div class="app-name">
-        <i class="fa-solid fa-cube"></i>
-        <span class="app-label">
-          {{ app.name }}
-          <small>{{ app.app_label }}</small>
-        </span>
-      </div>
-      <div class="app-models">
-        {% for model in app.models %}
-          {% if model.admin_url %}
-            <a href="{{ model.admin_url }}" class="changelink">
-              <i class="fa-solid fa-list-ul" style="font-size:0.75rem;"></i>
-              {{ model.name }}
-            </a>
-            {% if model.add_url %}
-              <a href="{{ model.add_url }}" class="addlink">
-                <i class="fa-solid fa-plus" style="font-size:0.7rem;"></i>
-                Add
-              </a>
-            {% endif %}
-          {% else %}
-            <span>{{ model.name }}</span>
-          {% endif %}
-          {% if model.count %}
-            <span class="model-count">{{ model.count }}</span>
-          {% endif %}
-        {% endfor %}
-      </div>
+<div class="dashboard-grid">
+    <div class="main-col">
+        <div class="app-list">
+            {% for app in app_list %}
+            <div class="app-item">
+                <div class="app-left">
+                    <div class="app-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="app-info">
+                        <div class="app-name">{{ app.name }}</div>
+                        <div class="app-label">{{ app.app_label }}</div>
+                    </div>
+                </div>
+                <div class="app-right">
+                    {% for model in app.models %}
+                        {% if model.admin_url %}
+                            <a href="{{ model.admin_url }}" class="view-link">
+                                <i class="fa-solid fa-list-ul" style="font-size:0.75rem;"></i> {{ model.name }}
+                            </a>
+                        {% endif %}
+                        {% if model.add_url %}
+                            <a href="{{ model.add_url }}" class="add-link">
+                                <i class="fa-solid fa-plus" style="font-size:0.7rem;"></i> Add
+                            </a>
+                        {% endif %}
+                        {% if model.count %}<span class="model-count">{{ model.count }}</span>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-  </div>
-</div>
-{% endblock %}
 
-{% block sidebar %}
-<div id="content-related">
-    <div class="module" id="recent-actions-module">
-        <h2><i class="fa-solid fa-clock-rotate-left" style="margin-right:8px;"></i>{% translate 'Recent actions' %}</h2>
-        <h3>{% translate 'My actions' %}</h3>
+    <div class="side-col">
+        <div class="recent-card">
+            <h2><i class="fa-solid fa-clock-rotate-left" style="margin-right:8px;"></i>{% translate 'Recent actions' %}</h2>
             {% load log %}
             {% get_admin_log 10 as admin_log for_user user %}
             {% if not admin_log %}
-            <p style="color:var(--text-muted);font-size:0.85rem;">{% translate 'None available' %}</p>
+                <p style="color:var(--text-muted);font-size:0.85rem;">{% translate 'None available' %}</p>
             {% else %}
-            <ul class="actionlist">
-            {% for entry in admin_log %}
-            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}" style="border-bottom:1px solid rgba(212,175,55,0.05);padding:8px 0;">
-                {% if entry.is_deletion or not entry.get_admin_url %}
-                    <i class="fa-solid fa-trash-can" style="font-size:0.75rem;margin-right:6px;"></i>
-                    {{ entry.object_repr }}
-                {% else %}
-                    <a href="{{ entry.get_admin_url }}" style="font-weight:500;">
-                        <i class="fa-solid fa-pen-to-square" style="font-size:0.75rem;margin-right:6px;"></i>
+                {% for entry in admin_log %}
+                <div class="action-item">
+                    {% if entry.is_addition %}<span style="color:var(--success);font-weight:600;">+</span>{% endif %}
+                    {% if entry.is_change %}<span style="color:var(--accent-gold);font-weight:600;">~</span>{% endif %}
+                    {% if entry.is_deletion %}<span style="color:var(--danger);font-weight:600;">-</span>{% endif %}
+                    {% if entry.is_deletion or not entry.get_admin_url %}
                         {{ entry.object_repr }}
-                    </a>
-                {% endif %}
-                <br>
-                {% if entry.content_type %}
-                    <span class="mini quiet" style="color:var(--text-muted);font-size:0.75rem;margin-left:18px;">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
-                {% else %}
-                    <span class="mini quiet" style="color:var(--text-muted);font-size:0.75rem;margin-left:18px;">{% translate 'Unknown content' %}</span>
-                {% endif %}
-            </li>
-            {% endfor %}
-            </ul>
+                    {% else %}
+                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                    {% endif %}
+                    <br>
+                    {% if entry.content_type %}
+                        <span class="mini">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
             {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

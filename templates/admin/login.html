@@ -1,6 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
+{% block sidebar_layout %}{% endblock %}
 {% block extrastyle %}{{ block.super }}
 <style>
     body { background: linear-gradient(135deg, #0A0F1F 0%, #111827 50%, #0A0F1F 100%); }
@@ -13,6 +14,15 @@
         background: transparent;
         padding: 2rem;
     }
+    .dashboard-main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem !important;
+    }
+    .top-bar, .admin-breadcrumbs { display: none !important; }
     #content {
         padding: 0 !important;
         width: 100%;
