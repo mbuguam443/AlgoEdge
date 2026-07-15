@@ -1,13 +1,14 @@
 {% extends "admin/base.html" %}
 {% load static %}
 
-{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | AlgoEdge Admin{% endblock %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block branding %}
-<div style="display:flex;align-items:center;gap:12px;padding:10px 20px;">
-    <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" height="35" onerror="this.style.display='none'">
-    <h1 style="font-weight:800;color:#D4AF37;margin:0;font-size:1.5rem;">ALGOEDGE Admin</h1>
-</div>
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.3rem; color: #D4AF37; text-decoration: none;">
+        ⚡ AlgoEdge
+    </a>
+</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
@@ -15,30 +16,63 @@
 {% block extrastyle %}
 <style>
     :root {
-        --primary: #0A0F1F;
+        --primary: #D4AF37;
         --secondary: #111827;
-        --accent: #D4AF37;
-        --link-fg: #D4AF37;
-        --link-selected-fg: #E5C85F;
-        --header-bg: #0A0F1F;
+        --accent: #00C853;
+        --body-bg: #0A0F1F;
+        --body-quiet-color: #9CA3AF;
+        --body-loud-color: #F3F4F6;
+        --header-bg: #111827;
         --header-color: #D4AF37;
+        --header-link-color: #F3F4F6;
         --breadcrumbs-bg: #111827;
         --breadcrumbs-fg: #D4AF37;
-        --selected-row: rgba(212,175,55,0.1);
+        --breadcrumbs-link-fg: #D4AF37;
+        --link-fg: #D4AF37;
+        --link-hover-color: #C5A030;
+        --link-selected-fg: #D4AF37;
+        --hairline-color: #1F2937;
+        --border-color: #1F2937;
+        --error-fg: #EF4444;
+        --message-success-bg: #064E3B;
+        --message-warning-bg: #451A03;
+        --message-error-bg: #7F1D1D;
         --darkened-bg: #111827;
-        --body-bg: #0A0F1F;
-        --body-fg: #e0e0e0;
-        --body-quiet-color: #94A3B8;
-        --border-color: rgba(212,175,55,0.15);
+        --selected-bg: #1F2937;
+        --selected-row: #1F2937;
+        --button-bg: #D4AF37;
+        --button-fg: #0A0F1F;
+        --button-hover-bg: #C5A030;
+        --default-button-bg: #D4AF37;
+        --default-button-fg: #0A0F1F;
+        --default-button-hover-bg: #C5A030;
+        --close-button-bg: #374151;
+        --close-button-fg: #F3F4F6;
+        --delete-button-bg: #DC2626;
+        --delete-button-hover-bg: #B91C1C;
+        --object-tools-bg: #D4AF37;
+        --object-tools-fg: #0A0F1F;
     }
-    #header { background: var(--header-bg); border-bottom: 1px solid var(--border-color); }
-    #user-tools a { color: var(--accent) !important; }
-    .module h2, .module caption { background: var(--secondary); }
-    .button, input[type=submit], input[type=button] { background: var(--accent); color: #000; }
-    .button:hover, input[type=submit]:hover { background: #E5C85F; }
-    a:link, a:visited { color: var(--accent); }
-    #changelist .actions { background: var(--secondary); }
-    .paginator { background: var(--secondary); }
-    .object-tools a { background: var(--accent); color: #000; }
+    #header { border-bottom: 1px solid #D4AF37; }
+    .module h2, .module caption { background: #111827; color: #D4AF37; }
+    .module a.section:link, .module a.section:visited { color: #D4AF37; }
+    div.breadcrumbs { border-bottom: 1px solid #D4AF37; }
+    .button.default, input[type=submit].default { font-weight: 600; }
+    .button, input[type=submit], input[type=button] { font-weight: 500; }
+    #changelist-filter li.selected a { color: #D4AF37; }
+    .paginator a:link, .paginator a:visited { color: #D4AF37; }
+    .selector-chosen h2 { background: #D4AF37; color: #0A0F1F; }
+    td.original p { color: #9CA3AF; }
+    tr.row2 { background: #0F1525; }
+    tr.row1 { background: #0A0F1F; }
+    .aligned label { color: #9CA3AF; }
+    .form-row { border-bottom: 1px solid #1F2937; }
+    .submit-row { background: #111827; border-top: 1px solid #1F2937; }
+    .dashboard #content { width: 100%; }
+    .dashboard .module table th { width: 100%; }
+    .login #header { background: #111827; }
+    .login #content { background: #0A0F1F; }
+    .login .form-row { border-bottom: none; }
+    .login .submit-row { background: transparent; border: none; }
 </style>
 {% endblock %}
