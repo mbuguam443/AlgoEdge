@@ -1,0 +1,178 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+    body { background: linear-gradient(135deg, #0A0F1F 0%, #111827 50%, #0A0F1F 100%); }
+    #header { display: none; }
+    #container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        padding: 2rem;
+    }
+    #content {
+        padding: 0 !important;
+        width: 100%;
+        max-width: 440px;
+    }
+    #content-main {
+        background: rgba(17, 24, 39, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .login-header img {
+        height: 50px;
+        margin-bottom: 1rem;
+    }
+    .login-header h3 {
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: #fff;
+        margin: 0 0 0.5rem;
+    }
+    .login-header p {
+        color: #94A3B8;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    .form-row {
+        border-bottom: none !important;
+        padding: 0 0 1rem !important;
+        margin: 0;
+    }
+    .form-row label {
+        color: var(--text-secondary) !important;
+        font-weight: 500;
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+        display: block;
+        padding: 0 !important;
+    }
+    .form-row input {
+        width: 100%;
+        padding: 12px 16px !important;
+        border-radius: 8px !important;
+    }
+    .password-reset-link {
+        text-align: right;
+        margin: -0.5rem 0 1.5rem;
+    }
+    .password-reset-link a {
+        color: #D4AF37;
+        font-size: 0.85rem;
+        text-decoration: none;
+    }
+    .password-reset-link a:hover { color: #E5C85F; }
+    .submit-row {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .submit-row input {
+        width: 100%;
+        padding: 14px !important;
+        background: linear-gradient(135deg, #D4AF37 0%, #E5C85F 50%, #B8960F 100%) !important;
+        color: #0A0F1F !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        border: none !important;
+        border-radius: 12px !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .submit-row input:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    }
+    .errornote {
+        background: rgba(239,68,68,0.15);
+        border: 1px solid rgba(239,68,68,0.3);
+        color: #EF4444;
+        border-radius: 12px;
+        padding: 12px 20px;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+    }
+    .login-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #64748B;
+        font-size: 0.85rem;
+    }
+    .login-footer a {
+        color: #D4AF37;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .login-footer a:hover { color: #E5C85F; }
+</style>
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+{% block content_title %}{% endblock %}
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="login-header">
+    <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" onerror="this.style.display='none'">
+    <h3>Admin Login</h3>
+    <p>Sign in to the AlgoEdge administration panel</p>
+</div>
+
+{% if form.errors and not form.non_field_errors %}
+<p class="errornote">
+{% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+</p>
+{% endif %}
+
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p class="errornote">{{ error }}</p>
+{% endfor %}
+{% endif %}
+
+{% if user.is_authenticated %}
+<p class="errornote">
+{% blocktranslate trimmed %}
+    You are authenticated as {{ username }}, but are not authorized to
+    access this page. Would you like to login to a different account?
+{% endblocktranslate %}
+</p>
+{% endif %}
+
+<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+  <div class="form-row">
+    {{ form.username.errors }}
+    {{ form.username.label_tag }} {{ form.username }}
+  </div>
+  <div class="form-row">
+    {{ form.password.errors }}
+    {{ form.password.label_tag }} {{ form.password }}
+    <input type="hidden" name="next" value="{{ next }}">
+  </div>
+  {% url 'admin_password_reset' as password_reset_url %}
+  {% if password_reset_url %}
+  <div class="password-reset-link">
+    <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
+  </div>
+  {% endif %}
+  <div class="submit-row">
+    <input type="submit" value="{% translate 'Sign In' %}">
+  </div>
+</form>
+{% endblock %}
