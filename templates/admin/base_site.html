@@ -3,8 +3,11 @@
 
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
-{% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% block extrastyle %}{{ block.super }}
+<style>
+#site-name { margin: 0; }
+#site-name a { color: var(--accent-gold); font-weight: 800; text-decoration: none; font-size: 1.1rem; }
+</style>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
