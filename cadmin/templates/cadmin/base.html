@@ -285,7 +285,10 @@ table.cadmin .check-col{width:40px}
                     <div style="font-size:0.72rem;">{{ user.email|truncatechars:24 }}</div>
                 </div>
             </div>
-            <a href="{% url 'admin:index' %}" class="nav-item" style="margin:4px 0;padding:0.5rem 0.75rem;font-size:0.8rem;">
+            <a href="{% url 'cadmin:dashboard' %}" class="nav-item" style="margin:4px 0;padding:0.5rem 0.75rem;font-size:0.8rem;">
+                <i class="fas fa-th-large"></i>Admin Home
+            </a>
+            <a href="{% url 'admin:index' %}" target="_blank" class="nav-item" style="margin:4px 0;padding:0.5rem 0.75rem;font-size:0.8rem;">
                 <i class="fas fa-terminal"></i>Django Admin
             </a>
             <a href="{% url 'userauth:logout' %}" class="nav-item" style="margin:0;padding:0.5rem 0.75rem;font-size:0.8rem;">
