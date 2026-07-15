@@ -1,0 +1,25 @@
+{% extends 'cadmin/base.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'cadmin:dashboard' %}">Dashboard</a></li>
+    <li><span class="sep">/</span> <a href="{% url 'cadmin:'|add:model_name|add:'_list' %}">{{ verbose_name|title }}s</a></li>
+    <li><span class="sep">/</span> Delete</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="delete-card card-glass">
+    <div class="delete-icon"><i class="fas fa-exclamation-triangle"></i></div>
+    <h5>Delete {{ verbose_name|title }}</h5>
+    <p>Are you sure you want to delete this {{ verbose_name }}? This action cannot be undone.</p>
+    <div class="object-repr">{{ object }}</div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="btn-group">
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Yes, Delete</button>
+            <a href="{% url 'cadmin:'|add:model_name|add:'_list' %}" class="btn btn-outline"><i class="fas fa-times"></i> Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

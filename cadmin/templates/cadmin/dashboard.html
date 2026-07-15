@@ -1,0 +1,215 @@
+{% extends 'cadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-head">
+            <div class="stat-icon" style="background:rgba(212,175,55,0.12);color:var(--accent-gold);"><i class="fas fa-users"></i></div>
+        </div>
+        <div class="stat-body">
+            <div class="stat-value">{{ total_users }}</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-footer">
+            <span class="trend up"><i class="fas fa-arrow-up"></i> {{ new_users_today }} today</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-head">
+            <div class="stat-icon" style="background:rgba(0,200,83,0.12);color:var(--success);"><i class="fas fa-shopping-cart"></i></div>
+        </div>
+        <div class="stat-body">
+            <div class="stat-value">{{ total_orders }}</div>
+            <div class="stat-label">Total Orders</div>
+        </div>
+        <div class="stat-footer">
+            <span class="trend up"><i class="fas fa-arrow-up"></i> {{ orders_today }} today</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-head">
+            <div class="stat-icon" style="background:rgba(59,130,246,0.12);color:var(--info);"><i class="fas fa-graduation-cap"></i></div>
+        </div>
+        <div class="stat-body">
+            <div class="stat-value">{{ total_enrollments }}</div>
+            <div class="stat-label">Active Subscriptions</div>
+        </div>
+        <div class="stat-footer">
+            <span class="trend neutral">{{ total_courses }} courses</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-head">
+            <div class="stat-icon" style="background:rgba(212,175,55,0.12);color:var(--accent-gold);"><i class="fas fa-chart-line"></i></div>
+        </div>
+        <div class="stat-body">
+            <div class="stat-value">{{ total_signals }}</div>
+            <div class="stat-label">Trading Signals</div>
+        </div>
+        <div class="stat-footer">
+            <span class="trend neutral">{{ total_products }} products</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-head">
+            <div class="stat-icon" style="background:rgba(0,200,83,0.12);color:var(--success);"><i class="fas fa-trophy"></i></div>
+        </div>
+        <div class="stat-body">
+            <div class="stat-value">{{ total_challenges }}</div>
+            <div class="stat-label">Prop Challenges</div>
+        </div>
+        <div class="stat-footer">
+            <span class="trend neutral">{{ total_services }} services</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-head">
+            <div class="stat-icon" style="background:rgba(59,130,246,0.12);color:var(--info);"><i class="fas fa-project-diagram"></i></div>
+        </div>
+        <div class="stat-body">
+            <div class="stat-value">{{ total_projects }}</div>
+            <div class="stat-label">Active Projects</div>
+        </div>
+        <div class="stat-footer">
+            <span class="trend neutral">Automation</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card-glass">
+            <div class="card-title"><i class="fas fa-chart-bar"></i> User Registrations (7 Days)</div>
+            <div class="chart-container">
+                <canvas id="usersChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card-glass">
+            <div class="card-title"><i class="fas fa-chart-pie"></i> Platform Overview</div>
+            <div class="chart-container chart-sm">
+                <canvas id="overviewChart"></canvas>
+            </div>
+        </div>
+        <div class="card-glass">
+            <div class="card-title"><i class="fas fa-shopping-cart"></i> Orders (7 Days)</div>
+            <div class="chart-container chart-sm">
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-lg-12">
+        <div class="card-glass">
+            <div class="card-title"><i class="fas fa-clock-rotate-left"></i> Recent Activity</div>
+            <div class="table-wrap">
+                <table class="cadmin">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Content</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in recent_logs %}
+                        <tr>
+                            <td><span style="font-weight:500;">{{ log.user }}</span></td>
+                            <td>
+                                {% if log.action_flag == 1 %}<span class="badge-status active"><span class="dot"></span> Added</span>
+                                {% elif log.action_flag == 2 %}<span class="badge-status published"><span class="dot"></span> Changed</span>
+                                {% else %}<span class="badge-status inactive"><span class="dot"></span> Deleted</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ log.object_repr|truncatechars:40 }}</td>
+                            <td style="color:var(--text-muted);font-size:0.8rem;">{{ log.action_time|timesince }} ago</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4"><div class="empty-state"><i class="fas fa-inbox"></i><h6>No recent activity</h6></div></td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+new Chart(document.getElementById('usersChart'),{
+    type:'bar',
+    data:{
+        labels:['6d ago','5d ago','4d ago','3d ago','2d ago','Yesterday','Today'],
+        datasets:[{
+            label:'New Users',
+            data:{{ users_chart|safe }},
+            backgroundColor:'rgba(212,175,55,0.3)',
+            borderColor:'#D4AF37',
+            borderWidth:2,
+            borderRadius:6,
+        }]
+    },
+    options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{
+            x:{grid:{color:'rgba(212,175,55,0.05)'},ticks:{color:'#64748B'}},
+            y:{grid:{color:'rgba(212,175,55,0.05)'},ticks:{color:'#64748B',stepSize:1}}
+        }
+    }
+});
+new Chart(document.getElementById('ordersChart'),{
+    type:'line',
+    data:{
+        labels:['6d ago','5d ago','4d ago','3d ago','2d ago','Yesterday','Today'],
+        datasets:[{
+            label:'Orders',
+            data:{{ orders_chart|safe }},
+            borderColor:'#00C853',
+            backgroundColor:'rgba(0,200,83,0.1)',
+            fill:true,
+            tension:0.4,
+            pointRadius:3,
+            pointBackgroundColor:'#00C853',
+        }]
+    },
+    options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{
+            x:{grid:{color:'rgba(212,175,55,0.05)'},ticks:{color:'#64748B'}},
+            y:{grid:{color:'rgba(212,175,55,0.05)'},ticks:{color:'#64748B',stepSize:1}}
+        }
+    }
+});
+new Chart(document.getElementById('overviewChart'),{
+    type:'doughnut',
+    data:{
+        labels:['Users','Orders','Courses','Signals','Challenges'],
+        datasets:[{
+            data:[{{ total_users }},{{ total_orders }},{{ total_courses }},{{ total_signals }},{{ total_challenges }}],
+            backgroundColor:['#D4AF37','#00C853','#3B82F6','#F59E0B','#EF4444'],
+            borderWidth:0,
+        }]
+    },
+    options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{
+            legend:{position:'bottom',labels:{color:'#94A3B8',padding:12,font:{size:11}}}
+        },
+        cutout:'65%',
+    }
+});
+</script>
+{% endblock %}

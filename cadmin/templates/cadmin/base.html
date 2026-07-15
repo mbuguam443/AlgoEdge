@@ -1,0 +1,372 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }} | AlgoEdge Admin</title>
+<link rel="icon" type="image/png" href="{% static 'logos/favicon.png' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--primary:#0A0F1F;--secondary:#111827;--accent-gold:#D4AF37;--accent-gold-light:#E5C85F;--accent-gold-dark:#B8960F;--success:#00C853;--danger:#EF4444;--warning:#F59E0B;--info:#3B82F6;--text-primary:#FFF;--text-secondary:#94A3B8;--text-muted:#64748B;--border-color:rgba(212,175,55,0.15);--glass-bg:rgba(17,24,39,0.8);--glass-border:rgba(212,175,55,0.1);--card-bg:rgba(17,24,39,0.9);--gradient-gold:linear-gradient(135deg,#D4AF37,#E5C85F,#B8960F);--gradient-card:linear-gradient(145deg,rgba(17,24,39,0.95),rgba(10,15,31,0.95));--shadow-glow:0 0 30px rgba(212,175,55,0.1);--shadow-card:0 8px 32px rgba(0,0,0,0.3);--radius-sm:8px;--radius-md:12px;--radius-lg:20px;--radius-xl:24px;--font-primary:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--font-mono:'JetBrains Mono',monospace;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);--sidebar-w:260px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-primary);background:var(--primary);color:var(--text-primary);overflow-x:hidden;line-height:1.6}
+::selection{background:var(--accent-gold);color:var(--primary)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--primary)}
+::-webkit-scrollbar-thumb{background:rgba(212,175,55,0.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent-gold)}
+a{color:var(--accent-gold);text-decoration:none;transition:var(--transition)}
+a:hover{color:var(--accent-gold-light)}
+.text-gradient{background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Layout */
+.app-layout{display:flex;min-height:100vh}
+.app-sidebar{width:var(--sidebar-w);background:var(--secondary);border-right:1px solid var(--glass-border);position:fixed;top:0;left:0;height:100vh;z-index:1000;display:flex;flex-direction:column;transition:var(--transition)}
+.app-sidebar .brand{padding:1.25rem 1.25rem;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:12px}
+.app-sidebar .brand img{height:32px;flex-shrink:0}
+.app-sidebar .brand span{font-weight:800;font-size:1.1rem}
+.app-sidebar .brand .badge{font-size:0.55rem;background:rgba(212,175,55,0.2);color:var(--accent-gold);padding:2px 8px;border-radius:20px;font-weight:600;margin-left:auto;letter-spacing:0.03em;text-transform:uppercase}
+.app-sidebar .nav-section{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:700;padding:1.25rem 1.25rem 0.5rem}
+.app-sidebar .nav-item{display:flex;align-items:center;gap:12px;padding:0.6rem 1.25rem;color:var(--text-secondary);text-decoration:none;font-size:0.85rem;font-weight:500;transition:var(--transition);margin:0 0.5rem;border-radius:var(--radius-sm);position:relative}
+.app-sidebar .nav-item i{width:18px;text-align:center;font-size:0.9rem;flex-shrink:0}
+.app-sidebar .nav-item:hover,.app-sidebar .nav-item.active{background:rgba(212,175,55,0.08);color:var(--accent-gold)}
+.app-sidebar .nav-item.active::before{content:'';position:absolute;left:calc(-0.5rem);top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--accent-gold);border-radius:0 3px 3px 0}
+.app-sidebar .nav-item .count{background:rgba(100,116,139,0.2);color:var(--text-muted);padding:0 8px;border-radius:12px;font-size:0.7rem;font-weight:600;margin-left:auto}
+.app-sidebar .nav-divider{border:none;border-top:1px solid var(--glass-border);margin:0.75rem 1.25rem}
+.app-sidebar .sidebar-footer{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid var(--glass-border)}
+.app-sidebar .sidebar-footer .user-info{display:flex;align-items:center;gap:10px;padding:0.5rem 0;color:var(--text-secondary);font-size:0.82rem}
+.app-sidebar .sidebar-footer .user-info .avatar{width:32px;height:32px;border-radius:50%;background:rgba(212,175,55,0.15);color:var(--accent-gold);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0}
+.app-main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column;transition:var(--transition);max-width:calc(100vw - var(--sidebar-w));overflow-x:hidden}
+.app-topbar{background:rgba(10,15,31,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
+.app-topbar .left{display:flex;align-items:center;gap:1rem}
+.app-topbar .left .toggle-sidebar{background:none;border:none;color:var(--text-secondary);font-size:1.2rem;cursor:pointer;padding:4px;display:none}
+.app-topbar .left .search-box{position:relative}
+.app-topbar .left .search-box input{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 16px 8px 36px;color:var(--text-primary);font-size:0.85rem;width:320px;font-family:var(--font-primary);transition:var(--transition)}
+.app-topbar .left .search-box input:focus{outline:none;border-color:var(--accent-gold);background:rgba(212,175,55,0.05);width:400px}
+.app-topbar .left .search-box i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.85rem}
+.app-topbar .right{display:flex;align-items:center;gap:8px}
+.app-topbar .right .icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:transparent;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);position:relative;font-size:0.95rem}
+.app-topbar .right .icon-btn:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+.app-topbar .right .icon-btn .dot{width:6px;height:6px;border-radius:50%;background:var(--danger);position:absolute;top:8px;right:8px}
+.app-content{flex:1;padding:1.5rem 2rem;max-width:100%;overflow-x:hidden}
+.app-content .page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.app-content .page-head h4{font-weight:800;color:var(--text-primary);margin:0;font-size:1.25rem;display:flex;align-items:center;gap:10px}
+.app-content .page-head .breadcrumb{display:flex;align-items:center;gap:6px;color:var(--text-muted);font-size:0.8rem;margin:0;padding:0;list-style:none}
+.app-content .page-head .breadcrumb a{color:var(--accent-gold)}
+.app-content .page-head .breadcrumb .sep{color:var(--text-muted)}
+
+/* Cards */
+.stat-grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-bottom:2rem;width:100%}
+.stat-card{background:var(--gradient-card);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:1.25rem;transition:var(--transition);position:relative;overflow:hidden}
+.stat-card:hover{transform:translateY(-2px);border-color:rgba(212,175,55,0.25);box-shadow:var(--shadow-glow)}
+.stat-card .stat-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.stat-card .stat-head .stat-icon{width:42px;height:42px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.stat-card .stat-body .stat-value{font-size:1.5rem;font-weight:800;line-height:1.2}
+.stat-card .stat-body .stat-label{color:var(--text-muted);font-size:0.8rem;margin-top:2px}
+.stat-card .stat-footer{display:flex;align-items:center;gap:6px;margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(212,175,55,0.05);font-size:0.78rem}
+.stat-card .stat-footer .trend{font-weight:600}
+.stat-card .stat-footer .trend.up{color:var(--success)}
+.stat-card .stat-footer .trend.down{color:var(--danger)}
+.stat-card .stat-footer .trend.neutral{color:var(--text-muted)}
+.stat-card .chart-mini{position:absolute;bottom:0;right:0;opacity:0.1;pointer-events:none}
+
+/* Card glass */
+.card-glass{background:var(--gradient-card);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:1.5rem;transition:var(--transition);position:relative;overflow:hidden;margin-bottom:1.5rem;min-width:0}.app-content .row{width:100%;margin-left:0;margin-right:0}.app-content .row>*{min-width:0}
+.card-glass:hover{border-color:rgba(212,175,55,0.25)}
+.card-glass .card-title{font-weight:700;font-size:1rem;color:var(--text-primary);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.card-glass .card-title i{color:var(--accent-gold)}
+
+/* Tables */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--glass-border)}
+table.cadmin{width:100%;border-collapse:separate;border-spacing:0;font-size:0.85rem}
+table.cadmin thead{background:var(--secondary)}
+table.cadmin thead th{padding:12px 14px;color:var(--text-muted);font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--glass-border);white-space:nowrap;position:relative;cursor:pointer;user-select:none}
+table.cadmin thead th:hover{color:var(--accent-gold)}
+table.cadmin thead th i{margin-left:4px;font-size:0.65rem}
+table.cadmin tbody tr{transition:var(--transition)}
+table.cadmin tbody tr:hover{background:rgba(212,175,55,0.03)}
+table.cadmin tbody tr.selected{background:rgba(212,175,55,0.06)}
+table.cadmin tbody td{padding:12px 14px;color:var(--text-secondary);border-bottom:1px solid rgba(212,175,55,0.04);vertical-align:middle}
+table.cadmin .badge-status{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:600}
+table.cadmin .badge-status.active,.badge-status.published,.badge-status.completed{background:rgba(0,200,83,0.12);color:var(--success)}
+table.cadmin .badge-status.pending,.badge-status.draft{background:rgba(245,158,11,0.12);color:var(--warning)}
+table.cadmin .badge-status.inactive,.badge-status.failed,.badge-status.expired{background:rgba(239,68,68,0.12);color:var(--danger)}
+table.cadmin .badge-status .dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+table.cadmin .badge-status.active .dot,.badge-status.published .dot,.badge-status.completed .dot{background:var(--success)}
+table.cadmin .badge-status.pending .dot,.badge-status.draft .dot{background:var(--warning)}
+table.cadmin .badge-status.inactive .dot,.badge-status.failed .dot,.badge-status.expired .dot{background:var(--danger)}
+table.cadmin .actions-cell{display:flex;gap:6px}
+table.cadmin .actions-cell .btn-icon{width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:transparent;color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);font-size:0.8rem}
+table.cadmin .actions-cell .btn-icon:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+table.cadmin .actions-cell .btn-icon.danger:hover{border-color:var(--danger);color:var(--danger)}
+table.cadmin .check-col{width:40px}
+
+/* Forms */
+.form-card{background:var(--gradient-card);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:2rem;max-width:800px}
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;color:var(--text-secondary);font-weight:500;font-size:0.85rem;margin-bottom:6px}
+.form-group label .required{color:var(--danger);margin-left:2px}
+.form-control,.form-select{background:rgba(10,15,31,0.7);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:10px 14px;font-family:var(--font-primary);font-size:0.88rem;width:100%;transition:var(--transition)}
+.form-control:focus,.form-select:focus{outline:none;border-color:var(--accent-gold);box-shadow:0 0 0 3px rgba(212,175,55,0.1);background:rgba(10,15,31,0.9)}
+.form-control::placeholder{color:var(--text-muted)}
+.form-text{color:var(--text-muted);font-size:0.78rem;margin-top:4px}
+.form-control.error{border-color:var(--danger)}
+.errorlist{list-style:none;color:var(--danger);font-size:0.8rem;margin:4px 0 0;padding:0}
+.form-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:var(--radius-sm);font-family:var(--font-primary);font-weight:600;font-size:0.85rem;border:none;cursor:pointer;transition:var(--transition);text-decoration:none}
+.btn-gold{background:var(--gradient-gold);color:var(--primary)}
+.btn-gold:hover{box-shadow:var(--shadow-glow);transform:translateY(-1px);color:var(--primary)}
+.btn-outline{background:transparent;border:1px solid var(--glass-border);color:var(--text-secondary)}
+.btn-outline:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+.btn-danger{background:var(--danger);color:white}
+.btn-danger:hover{opacity:0.9;color:white}
+.btn-success{background:var(--success);color:#0A0F1F}
+.btn-sm{padding:6px 14px;font-size:0.8rem}
+.btn-icon-only{width:36px;height:36px;padding:0;justify-content:center}
+
+/* Pagination */
+.pagination-wrap{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;color:var(--text-muted);font-size:0.85rem}
+.pagination{display:flex;gap:4px;list-style:none;padding:0;margin:0}
+.pagination .page-item .page-link{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:transparent;color:var(--text-secondary);font-size:0.82rem;transition:var(--transition);text-decoration:none}
+.pagination .page-item.active .page-link{background:var(--accent-gold);color:var(--primary);font-weight:700;border-color:var(--accent-gold)}
+.pagination .page-item .page-link:hover{background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3);color:var(--accent-gold)}
+.pagination .page-item.disabled .page-link{opacity:0.3;cursor:not-allowed}
+
+/* Alerts */
+.alert-toast{position:fixed;top:80px;right:20px;z-index:9999;max-width:400px}
+.alert-toast .alert-item{background:var(--gradient-card);border:1px solid var(--glass-border);border-radius:var(--radius-md);padding:14px 20px 14px 44px;margin-bottom:8px;color:var(--text-primary);position:relative;box-shadow:var(--shadow-card);animation:slideIn 0.3s ease;font-size:0.88rem}
+.alert-toast .alert-item.success{border-left:3px solid var(--success)}
+.alert-toast .alert-item.success::before{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--success)}
+.alert-toast .alert-item.error{border-left:3px solid var(--danger)}
+.alert-toast .alert-item.error::before{content:'\f00d';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--danger)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* Delete page */
+.delete-card{text-align:center;padding:3rem;max-width:500px;margin:2rem auto}
+.delete-card .delete-icon{width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.12);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1.5rem}
+.delete-card h5{font-weight:700;margin-bottom:0.5rem}
+.delete-card p{color:var(--text-muted);font-size:0.9rem;margin-bottom:1.5rem}
+.delete-card .object-repr{background:rgba(212,175,55,0.08);border:1px solid var(--glass-border);border-radius:var(--radius-md);padding:0.75rem 1rem;color:var(--accent-gold);font-weight:600;margin-bottom:1.5rem;font-size:0.9rem}
+.delete-card .btn-group{display:flex;gap:12px;justify-content:center}
+
+/* Table toolbar */
+.table-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.75rem}
+.table-toolbar .left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.table-toolbar .left .filter-select{background:rgba(10,15,31,0.7);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text-secondary);padding:6px 12px;font-size:0.82rem;font-family:var(--font-primary)}
+.table-toolbar .left .filter-select:focus{outline:none;border-color:var(--accent-gold)}
+.table-toolbar .right{display:flex;gap:8px}
+
+/* Empty state */
+.empty-state{text-align:center;padding:4rem 2rem}
+.empty-state i{font-size:3rem;color:var(--text-muted);opacity:0.3;margin-bottom:1rem}
+.empty-state h6{font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.empty-state p{color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem}
+
+/* Chart containers */
+.chart-container{position:relative;height:300px;width:100%}
+.chart-sm{height:200px}
+
+/* Responsive */
+@media(max-width:991px){
+    .app-sidebar{transform:translateX(-100%)}
+    .app-sidebar.open{transform:translateX(0)}
+    .app-main{margin-left:0}
+    .app-topbar .left .toggle-sidebar{display:block}
+    .app-topbar .left .search-box input{width:200px}
+    .app-topbar .left .search-box input:focus{width:240px}
+    .form-row-grid{grid-template-columns:1fr}
+}
+@media(max-width:767px){
+    .app-content{padding:1rem}
+    .app-topbar{padding:0 1rem}
+    .app-topbar .left .search-box{display:none}
+    .stat-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+    .stat-card .stat-body .stat-value{font-size:1.2rem}
+}
+</style>
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+{% if messages %}
+<div class="alert-toast" id="alertToast">
+    {% for message in messages %}
+    <div class="alert-item {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+<script>setTimeout(()=>{const t=document.getElementById('alertToast');if(t)t.remove();},4000)</script>
+{% endif %}
+
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar" id="appSidebar">
+        <div class="brand">
+            <img src="{% static 'logos/logo.png' %}" alt="AlgoEdge" onerror="this.style.display='none'">
+            <span class="text-gradient">AlgoEdge</span>
+            <span class="badge">Admin</span>
+        </div>
+
+        <div class="nav-section">Main</div>
+        <a href="{% url 'cadmin:dashboard' %}" class="nav-item {% if app_label == 'dashboard' %}active{% endif %}">
+            <i class="fas fa-th-large"></i>Dashboard
+        </a>
+        <a href="{% url 'cadmin:users_list' %}" class="nav-item {% if app_label == 'auth' %}active{% endif %}">
+            <i class="fas fa-users"></i>Users
+        </a>
+        <a href="{% url 'cadmin:group_list' %}" class="nav-item {% if app_label == 'groups' %}active{% endif %}">
+            <i class="fas fa-shield"></i>Roles
+        </a>
+
+        <div class="nav-section">Trading</div>
+        <a href="{% url 'cadmin:product_list' %}" class="nav-item {% if app_label == 'shop' %}active{% endif %}">
+            <i class="fas fa-box"></i>Products
+        </a>
+        <a href="{% url 'cadmin:order_list' %}" class="nav-item {% if app_label == 'orders' %}active{% endif %}">
+            <i class="fas fa-receipt"></i>Orders
+        </a>
+        <a href="{% url 'cadmin:signal_list' %}" class="nav-item">
+            <i class="fas fa-chart-line"></i>Signals
+        </a>
+        <a href="{% url 'cadmin:mastertrader_list' %}" class="nav-item">
+            <i class="fas fa-copy"></i>Copy Traders
+        </a>
+        <a href="{% url 'cadmin:propfirm_list' %}" class="nav-item">
+            <i class="fas fa-trophy"></i>Prop Firms
+        </a>
+        <a href="{% url 'cadmin:propfirmchallenge_list' %}" class="nav-item">
+            <i class="fas fa-flag-checkered"></i>Challenges
+        </a>
+
+        <div class="nav-section">Academy</div>
+        <a href="{% url 'cadmin:course_list' %}" class="nav-item">
+            <i class="fas fa-graduation-cap"></i>Courses
+        </a>
+        <a href="{% url 'cadmin:lesson_list' %}" class="nav-item">
+            <i class="fas fa-video"></i>Lessons
+        </a>
+        <a href="{% url 'cadmin:enrollment_list' %}" class="nav-item">
+            <i class="fas fa-user-graduate"></i>Enrollments
+        </a>
+
+        <div class="nav-section">Content</div>
+        <a href="{% url 'cadmin:post_list' %}" class="nav-item">
+            <i class="fas fa-newspaper"></i>Blog Posts
+        </a>
+        <a href="{% url 'cadmin:service_list' %}" class="nav-item">
+            <i class="fas fa-concierge-bell"></i>Services
+        </a>
+        <a href="{% url 'cadmin:strategyproject_list' %}" class="nav-item">
+            <i class="fas fa-project-diagram"></i>Projects
+        </a>
+
+        <div class="nav-section">System</div>
+        <a href="{% url 'cadmin:payment_list' %}" class="nav-item">
+            <i class="fas fa-credit-card"></i>Payments
+        </a>
+        <a href="{% url 'cadmin:notification_list' %}" class="nav-item">
+            <i class="fas fa-bell"></i>Notifications
+        </a>
+        <a href="{% url 'cadmin:affiliateaccount_list' %}" class="nav-item">
+            <i class="fas fa-link"></i>Referrals
+        </a>
+
+        <hr class="nav-divider">
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar">{{ user.get_short_name|first|default:user.username|first|upper }}</div>
+                <div>
+                    <div style="font-weight:600;color:var(--text-primary);">{{ user.get_short_name|default:user.username }}</div>
+                    <div style="font-size:0.72rem;">{{ user.email|truncatechars:24 }}</div>
+                </div>
+            </div>
+            <a href="{% url 'admin:index' %}" class="nav-item" style="margin:4px 0;padding:0.5rem 0.75rem;font-size:0.8rem;">
+                <i class="fas fa-terminal"></i>Django Admin
+            </a>
+            <a href="{% url 'userauth:logout' %}" class="nav-item" style="margin:0;padding:0.5rem 0.75rem;font-size:0.8rem;">
+                <i class="fas fa-sign-out-alt"></i>Sign Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="app-main">
+        <!-- Top Bar -->
+        <header class="app-topbar">
+            <div class="left">
+                <button class="toggle-sidebar" onclick="document.getElementById('appSidebar').classList.toggle('open')">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search anything..." id="globalSearch" oninput="filterSidebar(this.value)">
+                </div>
+            </div>
+            <div class="right">
+                <a href="{{ site_url }}" class="icon-btn" title="View Site">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+                <a href="{% url 'cadmin:notification_list' %}" class="icon-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="dot"></span>
+                </a>
+                <div class="dropdown d-inline-block">
+                    <button class="icon-btn" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark bg-glass" style="min-width:180px;">
+                        <li><a class="dropdown-item" href="{% url 'userauth:profile' %}"><i class="fas fa-user-cog me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'admin:password_change' %}"><i class="fas fa-key me-2"></i>Password</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'userauth:logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="app-content">
+            <div class="page-head">
+                <div>
+                    <h4>
+                        {% if app_label != 'dashboard' %}
+                        <a href="{% url 'cadmin:dashboard' %}" style="color:var(--text-muted);font-size:0.85rem;font-weight:400;">
+                            <i class="fas fa-chevron-left"></i> Back
+                        </a>
+                        {% endif %}
+                        {{ page_title }}
+                    </h4>
+                    {% block breadcrumb %}
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'cadmin:dashboard' %}">Dashboard</a></li>
+                        {% if app_label != 'dashboard' %}<li><span class="sep">/</span> {{ page_title }}</li>{% endif %}
+                    </ol>
+                    {% endblock %}
+                </div>
+                {% block page_actions %}{% endblock %}
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function filterSidebar(val){
+    document.querySelectorAll('.app-sidebar .nav-item').forEach(el=>{
+        el.style.display=el.textContent.toLowerCase().includes(val.toLowerCase())?'':'none'
+    })
+}
+document.addEventListener('click',function(e){
+    var s=document.getElementById('appSidebar');
+    if(window.innerWidth<=991 && s.classList.contains('open') && !s.contains(e.target) && !e.target.closest('.toggle-sidebar')){
+        s.classList.remove('open')
+    }
+});
+{% block extra_js %}{% endblock %}
+</script>
+</body>
+</html>

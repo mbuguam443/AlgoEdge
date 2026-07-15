@@ -1,0 +1,139 @@
+{% extends 'cadmin/base.html' %}
+{% load admin_tags %}
+
+{% block page_actions %}
+<div class="d-flex gap-2">
+    {% if has_add %}
+    <a href="{{ add_url }}" class="btn btn-gold btn-sm"><i class="fas fa-plus"></i> Add {{ verbose_name }}</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card-glass">
+    <div class="table-toolbar">
+        <div class="left">
+            <input type="text" class="form-control" style="width:240px;padding:6px 12px;font-size:0.82rem;" placeholder="Search {{ verbose_name_plural }}..." id="tableSearch" oninput="filterTable(this.value)">
+            <select class="filter-select" onchange="window.location.href=this.value">
+                <option value="">All Status</option>
+                <option value="">Active</option>
+                <option value="">Inactive</option>
+            </select>
+        </div>
+        <div class="right">
+            <button class="btn btn-outline btn-sm" onclick="exportTable('csv')"><i class="fas fa-file-csv"></i> CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="exportTable('copy')"><i class="fas fa-copy"></i> Copy</button>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table class="cadmin" id="dataTable">
+            <thead>
+                <tr>
+                    <th class="check-col"><input type="checkbox" onchange="toggleAll(this)"></th>
+                    {% for field in fields %}
+                    <th onclick="sortTable({{ forloop.counter }})">{{ field.verbose_name }} <i class="fas fa-sort"></i></th>
+                    {% endfor %}
+                    <th style="width:100px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in object_list %}
+                <tr>
+                    <td><input type="checkbox" class="row-check" value="{{ obj.pk }}"></td>
+                    {% for field in fields %}
+                    <td>
+                        {% with val=obj|field_value:field.name %}
+                            {% if val is True or val is False %}
+                                {% if val %}<span class="badge-status active"><span class="dot"></span> Yes</span>
+                                {% else %}<span class="badge-status inactive"><span class="dot"></span> No</span>
+                                {% endif %}
+                            {% elif val|slugify == val|stringformat:'s' and val|length < 50 %}
+                                {{ val }}
+                            {% else %}
+                                {{ val|truncatechars:50 }}
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                    <td>
+                        <div class="actions-cell">
+                            <a href="{% url 'cadmin:'|add:model_name|add:'_edit' obj.pk %}" class="btn-icon" title="Edit">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{% url 'cadmin:'|add:model_name|add:'_delete' obj.pk %}" class="btn-icon danger" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{{ fields|length|add:2 }}">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h6>No {{ verbose_name_plural }} found</h6>
+                            <p>Get started by creating your first {{ verbose_name }}.</p>
+                            {% if has_add %}
+                            <a href="{{ add_url }}" class="btn btn-gold btn-sm"><i class="fas fa-plus"></i> Add {{ verbose_name }}</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+    <div class="pagination-wrap">
+        <span>Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}</span>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1"><i class="fas fa-chevron-left"></i></a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-chevron-right"></i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleAll(cb){document.querySelectorAll('.row-check').forEach(c=>c.checked=cb.checked)}
+function filterTable(val){
+    document.querySelectorAll('#dataTable tbody tr').forEach(row=>{
+        if(row.querySelector('td[colspan]')) return;
+        row.style.display=row.textContent.toLowerCase().includes(val.toLowerCase())?'':'none'
+    })
+}
+function sortTable(n){
+    var t=document.getElementById('dataTable'),rows=Array.from(t.querySelectorAll('tbody tr:not([style*="display:none"])'));
+    var dir=t.querySelectorAll('th')[n].getAttribute('data-dir')||'asc';
+    rows.sort((a,b)=>{
+        var x=a.cells[n].textContent.trim(),y=b.cells[n].textContent.trim();
+        var v=isNaN(x)?x.localeCompare(y):parseFloat(x)-parseFloat(y);
+        return dir==='asc'?v:-v;
+    });
+    rows.forEach(r=>t.querySelector('tbody').appendChild(r));
+    t.querySelectorAll('th')[n].setAttribute('data-dir',dir==='asc'?'desc':'asc');
+}
+function exportTable(fmt){
+    var rows=[],t=document.getElementById('dataTable');
+    t.querySelectorAll('thead th:not(.check-col):not(:last-child)').forEach(th=>rows.push(th.textContent.trim()));
+    var csv=[rows.join(',')];
+    t.querySelectorAll('tbody tr').forEach(tr=>{
+        var row=[];
+        tr.querySelectorAll('td:not(:first-child):not(:last-child)').forEach(td=>row.push('"'+td.textContent.trim().replace(/"/g,'""')+'"'));
+        if(row.length)csv.push(row.join(','));
+    });
+    if(fmt==='csv'){var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv.join('\n'));a.download='export.csv';a.click()}
+    if(fmt==='copy'){navigator.clipboard.writeText(csv.join('\n'))}
+}
+</script>
+{% endblock %}
