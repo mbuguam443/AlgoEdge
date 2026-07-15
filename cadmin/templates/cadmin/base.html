@@ -29,7 +29,7 @@ a:hover{color:var(--accent-gold-light)}
 .app-sidebar .brand img{height:32px;flex-shrink:0}
 .app-sidebar .brand span{font-weight:800;font-size:1.1rem}
 .app-sidebar .brand .badge{font-size:0.55rem;background:rgba(212,175,55,0.2);color:var(--accent-gold);padding:2px 8px;border-radius:20px;font-weight:600;margin-left:auto;letter-spacing:0.03em;text-transform:uppercase}
-.app-sidebar .nav-section{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:700;padding:1.25rem 1.25rem 0.5rem}
+.app-sidebar .sidebar-scroll{flex:1;overflow-y:auto;padding-bottom:0.5rem}.app-sidebar .nav-section{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:700;padding:1.25rem 1.25rem 0.5rem}
 .app-sidebar .nav-item{display:flex;align-items:center;gap:12px;padding:0.6rem 1.25rem;color:var(--text-secondary);text-decoration:none;font-size:0.85rem;font-weight:500;transition:var(--transition);margin:0 0.5rem;border-radius:var(--radius-sm);position:relative}
 .app-sidebar .nav-item i{width:18px;text-align:center;font-size:0.9rem;flex-shrink:0}
 .app-sidebar .nav-item:hover,.app-sidebar .nav-item.active{background:rgba(212,175,55,0.08);color:var(--accent-gold)}
@@ -210,6 +210,7 @@ table.cadmin .check-col{width:40px}
             <span class="badge">Admin</span>
         </div>
 
+        <div class="sidebar-scroll">
         <div class="nav-section">Main</div>
         <a href="{% url 'cadmin:dashboard' %}" class="nav-item {% if app_label == 'dashboard' %}active{% endif %}">
             <i class="fas fa-th-large"></i>Dashboard
@@ -275,6 +276,7 @@ table.cadmin .check-col{width:40px}
         </a>
 
         <hr class="nav-divider">
+        </div>
         <div class="sidebar-footer">
             <div class="user-info">
                 <div class="avatar">{{ user.get_short_name|first|default:user.username|first|upper }}</div>
