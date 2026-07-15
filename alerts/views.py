@@ -1,6 +1,7 @@
-from django.views.generic import ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.views.generic import ListView
 from .models import Notification
 
 class NotificationListView(LoginRequiredMixin, ListView):
@@ -14,11 +15,9 @@ class NotificationListView(LoginRequiredMixin, ListView):
 def mark_read(request, pk):
     if request.method == 'POST':
         Notification.objects.filter(user=request.user, pk=pk).update(is_read=True)
-        return JsonResponse({'status': 'ok'})
-    return JsonResponse({'status': 'error'}, status=400)
+    return redirect('alerts:notifications')
 
 def mark_all_read(request):
     if request.method == 'POST':
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
-        return JsonResponse({'status': 'ok'})
-    return JsonResponse({'status': 'error'}, status=400)
+    return redirect('alerts:notifications')
