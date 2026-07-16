@@ -109,11 +109,14 @@ table.cadmin .check-col{width:40px}
 .form-group{margin-bottom:1.25rem}
 .form-group label{display:block;color:var(--text-secondary);font-weight:500;font-size:0.85rem;margin-bottom:6px}
 .form-group label .required{color:var(--danger);margin-left:2px}
-.form-control,.form-select{background:rgba(10,15,31,0.7);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:10px 14px;font-family:var(--font-primary);font-size:0.88rem;width:100%;transition:var(--transition)}
-.form-control:focus,.form-select:focus{outline:none;border-color:var(--accent-gold);box-shadow:0 0 0 3px rgba(212,175,55,0.1);background:rgba(10,15,31,0.9)}
-.form-control::placeholder{color:var(--text-muted)}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=url],input[type=date],input[type=datetime-local],input[type=time],input[type=search],textarea,select,.form-control,.form-select{background:rgba(10,15,31,0.7);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:10px 14px;font-family:var(--font-primary);font-size:0.88rem;width:100%;transition:var(--transition)}
+input[type=text]:focus,input[type=email]:focus,input[type=password]:focus,input[type=number]:focus,input[type=url]:focus,input[type=date]:focus,input[type=datetime-local]:focus,input[type=time]:focus,input[type=search]:focus,textarea:focus,select:focus,.form-control:focus,.form-select:focus{outline:none;border-color:var(--accent-gold);box-shadow:0 0 0 3px rgba(212,175,55,0.1);background:rgba(10,15,31,0.9)}
+input::placeholder,textarea::placeholder{color:var(--text-muted)}
+textarea{min-height:120px;resize:vertical}
+select{padding-right:30px;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer}
+input[type=checkbox],input[type=radio]{width:18px;height:18px;accent-color:var(--accent-gold);cursor:pointer;margin-right:6px}
+input[type=file]::file-selector-button{background:var(--accent-gold);color:var(--primary);border:none;padding:6px 14px;border-radius:var(--radius-sm);font-weight:600;font-size:0.8rem;cursor:pointer;margin-right:10px}
 .form-text{color:var(--text-muted);font-size:0.78rem;margin-top:4px}
-.form-control.error{border-color:var(--danger)}
 .errorlist{list-style:none;color:var(--danger);font-size:0.8rem;margin:4px 0 0;padding:0}
 .form-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 
