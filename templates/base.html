@@ -91,7 +91,7 @@
                                 <i class="fas fa-user me-1"></i>{{ user.username }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark bg-glass">
-                                <li><a class="dropdown-item" href="{% url 'dashboard:home' %}"><i class="fas fa-th-large me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{% if user.is_staff %}{% url 'cadmin:dashboard' %}{% else %}{% url 'dashboard:home' %}{% endif %}"><i class="fas fa-th-large me-2"></i>Dashboard</a></li>
                                 <li><a class="dropdown-item" href="{% url 'userauth:profile' %}"><i class="fas fa-user-cog me-2"></i>Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'refer:dashboard' %}"><i class="fas fa-link me-2"></i>Affiliates</a></li>
                                 <li><hr class="dropdown-divider"></li>
