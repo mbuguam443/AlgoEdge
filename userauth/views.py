@@ -1,7 +1,7 @@
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.contrib.auth.views import LoginView as AuthLoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import UserProfile
 from .forms import RegistrationForm, LoginForm, ProfileForm
 from refer.models import AffiliateAccount
@@ -29,6 +29,11 @@ class RegisterView(CreateView):
 class LoginView(AuthLoginView):
     form_class = LoginForm
     template_name = 'userauth/login.html'
+
+    def get_success_url(self):
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return reverse('cadmin:dashboard')
+        return reverse('dashboard:home')
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'userauth/profile.html'
