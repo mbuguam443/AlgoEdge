@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
-    <li><a href="{% url 'cadmin:dashboard' %}">Dashboard</a></li>
+    <li><a href="{% url 'cadmin:dashboard' %}">Admin Panel</a></li>
     <li><span class="sep">/</span> <a href="{% url 'cadmin:'|add:model_name|add:'_list' %}">{{ verbose_name|title }}s</a></li>
     <li><span class="sep">/</span> {{ page_title }}</li>
 </ol>

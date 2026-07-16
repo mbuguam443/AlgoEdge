@@ -80,7 +80,7 @@ class DashboardView(StaffRequiredMixin, TemplateView):
             'recent_logs': recent_logs,
             'users_chart': users_chart,
             'orders_chart': orders_chart,
-            'page_title': 'Dashboard',
+            'page_title': 'Admin Panel',
             'app_label': 'dashboard',
         })
         return ctx

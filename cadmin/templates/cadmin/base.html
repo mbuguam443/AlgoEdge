@@ -216,7 +216,7 @@ input[type=file]::file-selector-button{background:var(--accent-gold);color:var(-
         <div class="sidebar-scroll">
         <div class="nav-section">Main</div>
         <a href="{% url 'cadmin:dashboard' %}" class="nav-item {% if app_label == 'dashboard' %}active{% endif %}">
-            <i class="fas fa-th-large"></i>Dashboard
+            <i class="fas fa-th-large"></i>Admin Panel
         </a>
         <a href="{% url 'cadmin:users_list' %}" class="nav-item {% if app_label == 'auth' %}active{% endif %}">
             <i class="fas fa-users"></i>Users
@@ -349,7 +349,7 @@ input[type=file]::file-selector-button{background:var(--accent-gold);color:var(-
                     </h4>
                     {% block breadcrumb %}
                     <ol class="breadcrumb">
-                        <li><a href="{% url 'cadmin:dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'cadmin:dashboard' %}">Admin Panel</a></li>
                         {% if app_label != 'dashboard' %}<li><span class="sep">/</span> {{ page_title }}</li>{% endif %}
                     </ol>
                     {% endblock %}
